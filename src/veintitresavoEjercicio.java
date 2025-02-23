@@ -1,6 +1,6 @@
 import javax.swing.JOptionPane;
 
-public class veintiunoavoEjercicio {
+public class veintitresavoEjercicio {
 
     public static void main(String[] args) {
         String nombre = JOptionPane.showInputDialog(null, "Ingresa su nombre");
