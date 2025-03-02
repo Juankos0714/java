@@ -6,20 +6,23 @@ public class practicaMenu {
 
         public static void main(String[] args) {
             int codMenuPpal=0, codMenuTipico=0, codMenuCarta=0, codMenuInternacional=0;
-            String usuario=JOptionPane.showInputDialog("Ingrese el nombre del comensal");
+            String usuario ="Anonimo";
+            usuario =JOptionPane.showInputDialog("Ingrese el nombre del comensal");
             double cuenta = 0;
             double contadorPlatos=0;
             double contadorPlatosT=0;
             double contadorPlatosC=0;
             double contadorPlatosI=0;
-            String msj="Estimado"+usuario+"\n Resumen del Pedido: \n\n";
+            String msj ="Estimado: "+usuario+"\nResumen del Pedido: \n\n";
             do{
-                String menu="MENU RESTAURANTE\n\n";
-                menu+="1. Plato Tipico\n";
-                menu+="2. Plato a la carta\n";
-                menu+="3. Plato internacional\n";
-                menu+="4. Salir\n\n";
-                menu+="Por favor seleccione una opcion\n";
+                String menu="""
+                MENU RESTAURANTE
+                1. Plato Típico
+                2. Plato a la carta
+                3. Plato Internacional
+                4. Salir
+                Por favor seleccione una opción:
+                """;
                 codMenuPpal=Integer.parseInt(JOptionPane.showInputDialog(menu));
                 switch (codMenuPpal){
                     case 1:
@@ -36,13 +39,13 @@ public class practicaMenu {
                                     JOptionPane.showMessageDialog(null, "Se ha solicitado un plato de frijoles, el costo es de $" + 12000);
                                     cuenta +=12000;
                                     contadorPlatosT++;
-                                    msj="Frijoles = $12000\n";
+                                    msj+="Frijoles = $12000\n";
                                     break;
                                 case 2:
                                     JOptionPane.showMessageDialog(null, "Se ha solciitado una Sopa de Verduras, el costo es de $" + 8000);
                                     cuenta +=8000;
                                     contadorPlatosT++;
-                                    msj="Sopa de verduras = $8000\n";
+                                    msj+="Sopa de verduras = $8000\n";
                                     break;
                                 case 3:
                                     break;
@@ -71,13 +74,13 @@ public class practicaMenu {
                                 JOptionPane.showMessageDialog(null, "Se ha solicitado un plato spaguetti a la carbonara, el costo es de $" + 16000);
                                 cuenta +=16000;
                                 contadorPlatosC++;
-                                msj="Spaguetti a la carbonara = $16000\n";
+                                msj+="Spaguetti a la carbonara = $16000\n";
                                 break;
                             case 2:
                                 JOptionPane.showMessageDialog(null, "Se ha solicitado una Lasagna, el costo es de $" + 20000);
                                 cuenta +=20000;
                                 contadorPlatosC++;
-                                msj="lasagna = $20000\n";
+                                msj+="lasagna = $20000\n";
                                 break;
                             case 3:
                                 break;
@@ -106,13 +109,13 @@ public class practicaMenu {
                                     JOptionPane.showMessageDialog(null, "Se ha solicitado un plato de caviar de gallina con frutos secos del oriente, el costo es de $" + 10000);
                                     cuenta +=10000;
                                     contadorPlatosI++;
-                                    msj="Caviar de gallina con frutos secos del oriente = $10000\n";
+                                    msj+="Caviar de gallina con frutos secos del oriente = $10000\n";
                                     break;
                                 case 2:
                                     JOptionPane.showMessageDialog(null, "Se ha solicitado una paella, el costo es de $" + 40000);
                                     cuenta +=40000;
                                     contadorPlatosI++;
-                                    msj="Paella = $40000\n";
+                                    msj+="Paella = $40000\n";
                                     break;
                                 case 3:
                                     break;
@@ -134,8 +137,12 @@ public class practicaMenu {
                         break;
                 }
             }while(codMenuPpal!=4);
-            contadorPlatos=contadorPlatosC+contadorPlatosI+contadorPlatosI;
-            msj+="Total de platos pedidos";
+            contadorPlatos=contadorPlatosC+contadorPlatosI+contadorPlatosT;
+            msj+="\nTotal de platos Tipicos: "+contadorPlatosT;
+            msj+="\nTotal de platos a la carta: "+contadorPlatosC;
+            msj+="\nTotal de platos internacionales: "+contadorPlatosI;
+            msj+="\nTotal de platos pedidos: "+contadorPlatos;
+            msj+="\nTotal de la cuenta: $"+cuenta;
 
             JOptionPane.showMessageDialog(null,msj);
 
