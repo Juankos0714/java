@@ -1,4 +1,4 @@
-package ejerciciosEstructurasDeControl;
+package ejrciciosEntregables;
 
 
 import javax.swing.*;

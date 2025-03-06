@@ -1,12 +1,14 @@
-package ejerciciosEstructurasDeControl;
+package estructurasIterativas;
+
+import ejrciciosEntregables.metodosJava;
 
 import javax.swing.*;
 
-public class ejercicioBonificacion {
+public class ejercicio8 {
     public static void main(String[] args) {
         int menuSalario =0;
 
-        double salario=1000000;
+        double salario = 1000000;
         double descuento=1;
         double bonificacion =1;
 
@@ -14,7 +16,7 @@ public class ejercicioBonificacion {
             String menu="""
                 MENU SALARIO
                 1. Para ingresar su categoria
-                2. Si desea consultar el salario base
+                2. Para ingresar su salario
                 3. Conocer su salario nuevo
               
                 Por favor seleccione una opción:
@@ -47,7 +49,7 @@ public class ejercicioBonificacion {
                     }
                     break;
                 case 2:
-                    JOptionPane.showMessageDialog(null,"Su salario base es de"+salario);
+                    salario = Double.parseDouble(JOptionPane.showInputDialog("Ingrese su salario"));
                     break;
                 case 3:
                     break;
@@ -59,10 +61,11 @@ public class ejercicioBonificacion {
 
         double nuevoSalario =salario+salario*bonificacion-salario*descuento;
 
-        String msj = ">>>>>TABLA SALARIOS<<<<<<\n _______________________________________________\n Salario Final: "+nuevoSalario;
+        String msj = ">>>>>TABLA SALARIOS<<<<<<\n _______________________________________________\nSalario actual"+salario+ "Salario Final: "+nuevoSalario;
         JOptionPane.showMessageDialog(null,msj);
 
 
 
     }
 }
+
