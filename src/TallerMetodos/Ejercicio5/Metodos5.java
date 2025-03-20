@@ -4,14 +4,15 @@ import javax.swing.*;
 
 public class Metodos5 {
     public void loop() {
-        int close = 1;
+        int close = 0;
         do {
             int num = SolicitarDatos();
             while (!Validacion(num)) {
                 num = SolicitarDatos();
             }
-            close = Integer.parseInt(JOptionPane.showInputDialog("Ingrese 0 para cerrar el ciclo"));
-        } while (close != 0);
+            close++;
+
+        } while (close < 10);
     }
 
     public int SolicitarDatos() {
