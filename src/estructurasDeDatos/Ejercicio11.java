@@ -15,20 +15,21 @@ public class Ejercicio11 {
         do {
             if (i < tamaño) {
                 numbers[i] = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el dato entero"));
-                i++;
+
                 if(numbers[i]%2==1){
                     countinpar++;
 
                 }else{
                     countpar++;
                 }
+                i++;
             } else {
                 JOptionPane.showMessageDialog(null, "¡El array está lleno! No se pueden agregar más datos.");
                 break;
             }
         } while (JOptionPane.showConfirmDialog(null, "¿Desea agregar otro dato?", "Repetir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
-        System.out.println("Numero de impares"+countinpar);
-        System.out.println("Numero de pares"+countpar);
+        System.out.println("Numero de impares: "+countinpar);
+        System.out.println("Numero de pares: "+countpar);
 
 
     }
