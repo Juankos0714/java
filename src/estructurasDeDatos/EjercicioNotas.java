@@ -49,7 +49,7 @@ public class EjercicioNotas {
             if (entrada < 0 && entrada > 5) {
                 JOptionPane.showMessageDialog(null, "Ingrese un valor valido");
             }
-        } while (entrada  0 && entrada > 5);
+        } while (entrada>  0 && entrada > 5);
         return entrada;
 
     }
