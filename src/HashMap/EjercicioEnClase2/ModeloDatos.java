@@ -21,8 +21,17 @@ public class ModeloDatos {
         return mapEstudiantes.get(documento);
     }
     public ArrayList<String> modificarEstudiante(String documento) {
-        return mapEstudiantes.put(documento, ArrayList<sc.nextLine()>) ;
-
+        if (!mapEstudiantes.containsKey(documento)) {
+            System.out.println("El estudiante con documento " + documento + " no existe.");
+            return null;
+        }
+        ArrayList<String> datosActuales = mapEstudiantes.get(documento);
+        System.out.println("Nombre actual: " + datosActuales.get(1));
+        System.out.println("Ingrese el nuevo nombre:");
+        String nuevoNombre = sc.nextLine();
+        datosActuales.set(1, nuevoNombre);
+        System.out.println("Nombre actualizado correctamente.");
+        return datosActuales;
     }
 
     public HashMap<String, ArrayList<String>> getMapaEstudiantes() {
