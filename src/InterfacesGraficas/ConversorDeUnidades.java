@@ -32,73 +32,98 @@ import java.awt.event.ActionListener;
 //Manejo de errores:
 //Si el usuario ingresa un valor no numérico en el campo de texto, muestra un mensaje de error utilizando JOptionPane.
 
-public class ConversorDeUnidades extends JFrame implements ActionListener, ChangeListener {
 
-    private JLabel  lblValor, lblResultado;
+public class ConversorDeUnidades extends JFrame implements ActionListener {
+    private JLabel lblTitulo, lblValor, lblResultado;
     private JTextField txtValor;
-    private JButton btnCalcular;
+    private JButton btnConvertir;
     private JPanel panel;
-    private JRadioButton Centimetros, Pulgadas;
-    private ButtonGroup bg;
+    private JRadioButton radioCentimetros, radioPulgadas;
+    private ButtonGroup grupoRadio;
+
+    public ConversorDeUnidades() {
+        setTitle("Conversor de Longitud");
+        setSize(350, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        inicializarComponentes();
+        setVisible(true);
+    }
+
     private void inicializarComponentes() {
         panel = new JPanel();
         panel.setLayout(null);
         panel.setBackground(Color.white);
-        bg=new ButtonGroup();
 
-        Centimetros=new JRadioButton("640*480");
-        Centimetros.setBounds(10,20,100,30);
-        Centimetros.addChangeListener(this);
-        add(Centimetros);
-        bg.add(Centimetros);
-
-        Pulgadas =new JRadioButton("800*600");
-        Pulgadas.setBounds(10,70,100,30);
-        Pulgadas.addChangeListener(this);
-        add(Pulgadas);
-        bg.add(Pulgadas);
-
-        txtValor = new JTextField();
-        txtValor.setBounds(180, 20, 150, 25);
+        lblTitulo = new JLabel("Conversor de Longitud");
+        lblTitulo.setBounds(100, 10, 150, 20);
+        panel.add(lblTitulo);
 
         lblValor = new JLabel("Valor a convertir:");
-        lblValor.setBounds(20, 50, 150, 25);
-
-
-        btnCalcular = new JButton("Calcular");
-        btnCalcular.setBounds(100, 180, 150, 30);
-        btnCalcular.addActionListener(this);
-
-        lblResultado = new JLabel("Conversion:");
-        lblResultado.setBounds(20, 220, 700, 25);
-
-
-        panel.add(txtValor);
+        lblValor.setBounds(20, 50, 120, 25);
         panel.add(lblValor);
-        panel.add(btnCalcular);
+
+        txtValor = new JTextField();
+        txtValor.setBounds(150, 50, 150, 25);
+        panel.add(txtValor);
+
+        radioCentimetros = new JRadioButton("Centímetros (cm)");
+        radioCentimetros.setBounds(20, 80, 150, 25);
+        radioCentimetros.setActionCommand("cm");
+        radioCentimetros.setSelected(true);
+        panel.add(radioCentimetros);
+
+        radioPulgadas = new JRadioButton("Pulgadas (in)");
+        radioPulgadas.setBounds(180, 80, 150, 25);
+        radioPulgadas.setActionCommand("in"); 
+        panel.add(radioPulgadas);
+
+        grupoRadio = new ButtonGroup();
+        grupoRadio.add(radioCentimetros);
+        grupoRadio.add(radioPulgadas);
+
+        btnConvertir = new JButton("Convertir");
+        btnConvertir.setBounds(100, 120, 120, 30);
+        btnConvertir.addActionListener(this);
+        panel.add(btnConvertir);
+
+        lblResultado = new JLabel("Resultado:");
+        lblResultado.setBounds(20, 160, 300, 25);
         panel.add(lblResultado);
 
         add(panel);
     }
-    public void stateChanged(ChangeEvent e) {
-        if (Centimetros.isSelected()) {
-            setSize(640,480);
 
-        }
-        if (Pulgadas.isSelected()) {
-            setSize(800,600);
-        }
-
-    }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnCalcular) {
-            ConversorDeUnidades();
+        if (e.getSource() == btnConvertir) {
+            realizarConversion();
         }
     }
 
-    @Override
-    public void stateChanged(ChangeEvent e) {
+    private void realizarConversion() {
+        try {
+            double valor = Double.parseDouble(txtValor.getText());
+            String unidadEntrada = grupoRadio.getSelection().getActionCommand();
+            double resultado = 0;
 
+            if (unidadEntrada.equals("cm")) {
+                resultado = valor * 0.393701;
+                lblResultado.setText(valor + " cm son: " + String.format("%.2f", resultado) + " pulgadas.");
+            } else if (unidadEntrada.equals("in")) {
+                resultado = valor * 2.54;
+                lblResultado.setText(valor + " pulgadas son: " + String.format("%.2f", resultado) + " centímetros.");
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una unidad de entrada.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ConversorDeUnidades::new);
     }
 }
