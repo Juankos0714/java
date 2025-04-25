@@ -12,7 +12,7 @@ public class CondominioAdministracion {
     private static final int COSTO_JUEGOS = 5000;
     private static final int COSTO_ZONAS_SOCIALES = 10000;
     private static final int COSTO_ASEO = 15000;
-    private static final double PORCENTAJE_DESCUENTO = 0.20; // 20% de descuento
+    private static final double PORCENTAJE_DESCUENTO = 0.20; 
     private static final int COSTO_FIJO = 50000;
 
     public static void main(String[] args) {
@@ -90,9 +90,9 @@ public class CondominioAdministracion {
             apartamentos.add(new Apartamento("103", "Moisés", "Federico", 1, 1));
             apartamentos.add(new Apartamento("401", "Eustaquio", "Zulia", 1, 2));
             apartamentos.add(new Apartamento("402", "Sacarías", "Sacarías", 2, 1));
-            apartamentos.add(new Apartamento("403", "Mateo", "", 0, 0)); // Apartamento desocupado
+            apartamentos.add(new Apartamento("403", "Mateo", "", 0, 0)); 
             apartamentos.add(new Apartamento("501", "Marcos", "Gonzalo", 2, 1));
-            apartamentos.add(new Apartamento("502", "Jesús", "", 0, 0)); // Apartamento desocupado
+            apartamentos.add(new Apartamento("502", "Jesús", "", 0, 0));
 
             JOptionPane.showMessageDialog(null,
                     "Se han cargado los datos predefinidos correctamente.",
