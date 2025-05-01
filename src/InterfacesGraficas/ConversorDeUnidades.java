@@ -76,7 +76,7 @@ public class ConversorDeUnidades extends JFrame implements ActionListener {
 
         radioPulgadas = new JRadioButton("Pulgadas (in)");
         radioPulgadas.setBounds(180, 80, 150, 25);
-        radioPulgadas.setActionCommand("in"); 
+        radioPulgadas.setActionCommand("in");
         panel.add(radioPulgadas);
 
         grupoRadio = new ButtonGroup();
