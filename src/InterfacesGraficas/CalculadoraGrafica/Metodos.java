@@ -10,6 +10,9 @@ public class Metodos extends JFrame implements ActionListener {
     private JTextField txtNum1, txtNum2;
     private JLabel lblTitulo, lblNum1, lblNum2, lblResultado;
     OperacionesMatematicas misOperaciones;
+    static JTextField textField = new JTextField();
+    static Color colorDeFondo = new Color(255, 0, 0);
+
 
     public Metodos() {
         setTitle("Ventana Operaciones");
@@ -69,6 +72,18 @@ public class Metodos extends JFrame implements ActionListener {
         btnDiv.setBounds(430, 380, 190, 50);
         btnDiv.addActionListener(this);
         add(btnDiv);
+        txtNum1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                validarCampo(txtNum1);
+            }
+        });
+
+        txtNum2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                validarCampo(txtNum2);
+            }
+        });
+
 
 
 
@@ -80,27 +95,43 @@ public class Metodos extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+
+
+
+        int num1 = Integer.parseInt(txtNum1.getText());
+        int num2 = Integer.parseInt(txtNum2.getText());
+
+        if ((num1 < 0 || num1 > 1000) || (num2 < 0 || num2 > 1000)) {
+            JOptionPane.showMessageDialog(null, "Cada número debe estar entre 0 y 1000. Inténtalo de nuevo.");
+            txtNum1.setBackground(colorDeFondo);
+            return;
+        }
+
+
+
+
+
+
+
+
         if(btnSum==e.getSource()){
-            int num1=Integer.parseInt(txtNum1.getText());
-            int num2=Integer.parseInt(txtNum2.getText());
+
             int resp=misOperaciones.sumar(num1,num2);
             lblResultado.setText("EL resultado de la Suma es "+resp);
         }
         if(btnRes==e.getSource()){
-            int num1=Integer.parseInt(txtNum1.getText());
-            int num2=Integer.parseInt(txtNum2.getText());
+
             int resp=misOperaciones.restar(num1,num2);
             lblResultado.setText("EL resultado de la Resta es "+resp);
         }
         if(btnMult==e.getSource()){
-            int num1=Integer.parseInt(txtNum1.getText());
-            int num2=Integer.parseInt(txtNum2.getText());
+
             int resp=misOperaciones.multiplicar(num1,num2);
             lblResultado.setText("EL resultado de la Multiplicacion es "+resp);
         }
         if(btnDiv==e.getSource()){
-            int num1=Integer.parseInt(txtNum1.getText());
-            int num2=Integer.parseInt(txtNum2.getText());
+
             String resp=misOperaciones.dividir(num1,num2);
             lblResultado.setText("EL resultado de la Division es "+resp);
 
@@ -110,6 +141,23 @@ public class Metodos extends JFrame implements ActionListener {
     public void asignarOperaciones(OperacionesMatematicas misOperaciones){
         this.misOperaciones=misOperaciones;
     }
+    private void validarCampo(JTextField campo) {
+        try {
+            int valor = Integer.parseInt(campo.getText());
+            if (valor < 0 || valor > 1000) {
+                campo.setBackground(Color.RED);
+            } else {
+                campo.setBackground(Color.WHITE);
+            }
+        } catch (NumberFormatException e) {
+            campo.setBackground(Color.RED);
+        }
+    }
+
+
+}
+
+
 
 }
 
