@@ -6,194 +6,369 @@ import Encapsulamiento.EjemploGUIEncapsulamiento.entidades.Estudiante;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
-public class VentanaPromedio extends JFrame  implements ActionListener {
-    private JTextField txtMateria;
-    private JTextField txtNombre;
-    private JTextField txtNota1;
-    private JTextField txtNota2;
-    private JTextField txtNota3;
-    private JButton btnCalcular;
-    private JButton btnLimpiar;
+public class VentanaPromedio extends JFrame {
+    private JTextField txtMateria, txtDocumento, txtNombre, txtNota1, txtNota2, txtNota3;
+    private JButton btnCalcular, btnLimpiar, btnConsultaIndividual, btnLista, btnEliminar, btnActualizar;
     private JLabel lblResultado;
 
-    private JButton btnConsultaIndividual;
-    private JButton btnLista;
-    private JScrollPane scrollPane;
-    private JTextArea   textArea;
-    Procesos misProcesos;
-    ModeloDatos miModeloDatos;
+    private static final double NOTA_MIN = 0.0;
+    private static final double NOTA_MAX = 5.0;
+    private static final Color COLOR_ERROR = Color.RED;
+    private static final Color COLOR_SUCCESS = Color.BLUE;
+    private static final Color COLOR_DEFAULT = Color.BLACK;
+
+    private final Procesos misProcesos;
+    private final ModeloDatos miModeloDatos;
 
     public VentanaPromedio() {
-        misProcesos=new Procesos();
+        misProcesos = new Procesos();
         miModeloDatos = new ModeloDatos();
+
         setTitle("Promedio estudiantes");
         setSize(659, 572);
-        getContentPane().setLayout(null);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        getContentPane().setLayout(new BorderLayout());
+
         iniciarComponentes();
+        pack();
     }
 
     private void iniciarComponentes() {
-        misProcesos=new Procesos();
-        ModeloDatos miModeloDatos = new ModeloDatos();
-        JLabel lblTitulo = new JLabel("SISTEMA CONTROL DE NOTAS");
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        JLabel lblTitulo = new JLabel("SISTEMA CONTROL DE NOTAS", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Verdana", Font.BOLD, 25));
-        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblTitulo.setBounds(10, 26, 606, 59);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JLabel lblMateria = new JLabel("Materia:");
-        lblMateria.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblMateria.setBounds(348, 117, 72, 22);
-        txtMateria = new JTextField();
-        txtMateria.setBounds(430, 120, 180, 19);
-        txtNombre = new JTextField();
-        txtNombre.setColumns(10);
-        txtNombre.setBounds(106, 120, 201, 19);
-        JLabel lblNombre = new JLabel("Nombre:");
-        lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNombre.setBounds(24, 117, 72, 22);
-        txtNota1 = new JTextField();
-        txtNota1.setColumns(10);
-        txtNota1.setBounds(106, 162, 96, 19);
-        JLabel lblNota1 = new JLabel("Nota1:");
-        lblNota1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNota1.setBounds(24, 159, 72, 22);
-        txtNota2 = new JTextField();
-        txtNota2.setColumns(10);
-        txtNota2.setBounds(309, 165, 96, 19);
-        JLabel lblNota2 = new JLabel("Nota2:");
-        lblNota2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNota2.setBounds(227, 162, 72, 22);
-        txtNota3 = new JTextField();
-        txtNota3.setColumns(10);
-        txtNota3.setBounds(513, 165, 96, 19);
-        JLabel lblNota3 = new JLabel("Nota3:");
-        lblNota3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNota3.setBounds(431, 162, 72, 22);
+        titlePanel.add(lblTitulo, BorderLayout.CENTER);
+
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints formGbc = new GridBagConstraints();
+        formGbc.insets = new Insets(5, 5, 5, 5);
+        formGbc.anchor = GridBagConstraints.WEST;
+
+        formGbc.gridx = 0; formGbc.gridy = 0;
+        formPanel.add(new JLabel("Nombre:"), formGbc);
+
+        formGbc.gridx = 1; formGbc.gridy = 0;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtNombre = new JTextField(20);
+        formPanel.add(txtNombre, formGbc);
+
+        formGbc.gridx = 2; formGbc.gridy = 0;
+        formGbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Materia:"), formGbc);
+
+        formGbc.gridx = 3; formGbc.gridy = 0;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtMateria = new JTextField(15);
+        formPanel.add(txtMateria, formGbc);
+
+        formGbc.gridx = 0; formGbc.gridy = 1;
+        formGbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Nota1:"), formGbc);
+
+        formGbc.gridx = 1; formGbc.gridy = 1;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtNota1 = new JTextField(10);
+        formPanel.add(txtNota1, formGbc);
+
+        formGbc.gridx = 2; formGbc.gridy = 1;
+        formGbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Nota2:"), formGbc);
+
+        formGbc.gridx = 3; formGbc.gridy = 1;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtNota2 = new JTextField(10);
+        formPanel.add(txtNota2, formGbc);
+
+        formGbc.gridx = 0; formGbc.gridy = 2;
+        formGbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Nota3:"), formGbc);
+
+        formGbc.gridx = 1; formGbc.gridy = 2;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtNota3 = new JTextField(10);
+        formPanel.add(txtNota3, formGbc);
+
+        formGbc.gridx = 2; formGbc.gridy = 2;
+        formGbc.fill = GridBagConstraints.NONE;
+        formPanel.add(new JLabel("Documento:"), formGbc);
+
+        formGbc.gridx = 3; formGbc.gridy = 2;
+        formGbc.fill = GridBagConstraints.HORIZONTAL;
+        txtDocumento = new JTextField(15);
+        formPanel.add(txtDocumento, formGbc);
+
+        JPanel resultPanel = new JPanel(new BorderLayout());
         lblResultado = new JLabel("Resultado:");
-        lblResultado.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblResultado.setBounds(24, 215, 586, 22);
-        btnCalcular = new JButton("Calcular");
-        btnCalcular.setBounds(106, 276, 201, 21);
-        btnCalcular.addActionListener(this);
-        btnLimpiar = new JButton("Limpiar");
-        btnLimpiar.setBounds(409, 276, 201, 21);
-        btnLimpiar.addActionListener(this);
+        resultPanel.add(lblResultado, BorderLayout.WEST);
 
-        btnConsultaIndividual =new JButton("Consultar");
-        btnConsultaIndividual.setBounds(375,225,112,21);
-        btnConsultaIndividual.addActionListener(this);
-        add(btnConsultaIndividual);
+        JPanel consultaPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnConsultaIndividual = createButton("Consultar", e -> consultaIndividual());
+        btnLista = createButton("Lista", e -> consultarLista());
+        consultaPanel.add(btnConsultaIndividual);
+        consultaPanel.add(btnLista);
+        resultPanel.add(consultaPanel, BorderLayout.EAST);
 
-        btnLista = new JButton("lista");
-        btnLista.setBounds(498,225,112,21);
-        btnLista.addActionListener(this);
-        add(btnLista);
+        JPanel buttonsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        btnCalcular = createButton("Calcular", e -> calcular());
+        btnLimpiar = createButton("Limpiar", e -> limpiar());
+        btnEliminar = createButton("Eliminar", e -> eliminarEstudiante());
+        btnActualizar = createButton("Actualizar", e -> actualizarEstudiante());
 
-        scrollPane = new JScrollPane();
-        scrollPane.setBounds(30,319,586,206);
-        add(scrollPane);
+        buttonsPanel.add(btnCalcular);
+        buttonsPanel.add(btnLimpiar);
+        buttonsPanel.add(btnEliminar);
+        buttonsPanel.add(btnActualizar);
 
-        textArea =new JTextArea();
-        scrollPane.setViewportView(textArea);
-        add(scrollPane);
-        add(lblTitulo);
-        add(lblMateria);
-        add(txtMateria);
-        add(btnLimpiar);
-        add(btnCalcular);
-        add(lblResultado);
-        add(lblNota3);
-        add(txtNota3);
-        add(lblNota2);
-        add(txtNota2);
-        add(lblNota1);
-        add(txtNota1);
-        add(lblNombre);
-        add(txtNombre);
+        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        mainPanel.add(titlePanel, gbc);
+
+        gbc.gridy = 1;
+        mainPanel.add(formPanel, gbc);
+
+        gbc.gridy = 2;
+        mainPanel.add(resultPanel, gbc);
+
+        gbc.gridy = 3;
+        mainPanel.add(buttonsPanel, gbc);
+
+        JPanel containerPanel = new JPanel(new BorderLayout());
+        containerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        containerPanel.add(mainPanel, BorderLayout.CENTER);
+
+        add(containerPanel);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnCalcular) {
-            System.out.println("Calcular");
-            calcular();
-        } else if (e.getSource() == btnLimpiar) {
-            System.out.println("Limpiar");
-            limpiar();
-        } else if (e.getSource()==btnConsultaIndividual) {
-            consultaIndivual();
-        }else if(e.getSource()==btnLista){
-            consultarLista();
-
-        }
-
-
+    private JButton createButton(String text, ActionListener listener) {
+        JButton button = new JButton(text);
+        button.addActionListener(listener);
+        return button;
     }
+
     private void calcular() {
-        Estudiante miEstudiante=new Estudiante();
-
-        miEstudiante.setNombre(txtNombre.getText());
-        miEstudiante.setMateria(txtMateria.getText());
-        miEstudiante.setNota1(Double.parseDouble(txtNota1.getText())); ;
-        miEstudiante.setNota2(Double.parseDouble(txtNota2.getText()));
-        miEstudiante.setNota3(Double.parseDouble(txtNota3.getText()));
-        double promedio = misProcesos.calcularPromedio(miEstudiante);
-        miEstudiante.setPromedio(promedio);
-        if (promedio!=-1) {
-            lblResultado.setText("Resultado: "+"Hola "+miEstudiante.getNombre()+", su promedio es: "+promedio);
-            lblResultado.setForeground(Color.blue);
-
-            String registro=miModeloDatos.registrarEstudiante(miEstudiante);
-            if(!registro.equals("ok")){
-                JOptionPane.showMessageDialog(null,registro,"ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+        try {
+            if (!validateRequiredFields()) {
+                return;
             }
-        }else {
-            lblResultado.setText("Revise los datos, porq no pueden ser negativos ni mayores a 5");
-            lblResultado.setForeground(Color.red);
+
+            Estudiante miEstudiante = createEstudianteFromForm();
+            if (miEstudiante == null) {
+                return;
+            }
+
+            double promedio = misProcesos.calcularPromedio(miEstudiante);
+            miEstudiante.setPromedio(promedio);
+
+            if (promedio >= 0) { // Valid promedio
+                displayResult(miEstudiante);
+                registerStudent(miEstudiante);
+            } else {
+                mostrarError("Revise los datos, porque no pueden ser negativos ni mayores a 5");
+            }
+        } catch (Exception ex) {
+            mostrarError("Error al calcular: " + ex.getMessage());
         }
-        System.out.println("EL promedio es: "+promedio);
-
-
-
     }
+
+    private boolean validateRequiredFields() {
+        if (isEmptyField(txtNombre) || isEmptyField(txtMateria) || isEmptyField(txtDocumento) ||
+                isEmptyField(txtNota1) || isEmptyField(txtNota2) || isEmptyField(txtNota3)) {
+            mostrarError("Todos los campos son obligatorios");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEmptyField(JTextField field) {
+        return field.getText().trim().isEmpty();
+    }
+
+    private Estudiante createEstudianteFromForm() {
+        try {
+            double nota1 = parseAndValidateNota(txtNota1.getText());
+            double nota2 = parseAndValidateNota(txtNota2.getText());
+            double nota3 = parseAndValidateNota(txtNota3.getText());
+
+            Estudiante estudiante = new Estudiante();
+            estudiante.setNombre(txtNombre.getText().trim());
+            estudiante.setMateria(txtMateria.getText().trim());
+            estudiante.setDocumento(txtDocumento.getText().trim());
+            estudiante.setNota1(nota1);
+            estudiante.setNota2(nota2);
+            estudiante.setNota3(nota3);
+
+            return estudiante;
+        } catch (NumberFormatException e) {
+            mostrarError("Las notas deben ser números válidos");
+            return null;
+        } catch (IllegalArgumentException e) {
+            mostrarError(e.getMessage());
+            return null;
+        }
+    }
+
+    private double parseAndValidateNota(String notaStr) {
+        double nota = Double.parseDouble(notaStr);
+        if (nota < NOTA_MIN || nota > NOTA_MAX) {
+            throw new IllegalArgumentException("Las notas deben estar entre " + NOTA_MIN + " y " + NOTA_MAX);
+        }
+        return nota;
+    }
+
+    private void displayResult(Estudiante estudiante) {
+        String message = "Resultado: Hola " + estudiante.getNombre() + ", su promedio es: " + estudiante.getPromedio();
+        lblResultado.setText(message);
+        lblResultado.setForeground(estudiante.getPromedio() < 3.5 ? COLOR_ERROR : COLOR_SUCCESS);
+    }
+
+    private void registerStudent(Estudiante estudiante) {
+        String resultado = miModeloDatos.registrarEstudiante(estudiante);
+        if (!resultado.equals("ok")) {
+            JOptionPane.showMessageDialog(this, resultado, "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     private void limpiar() {
         txtNombre.setText("");
         txtMateria.setText("");
+        txtDocumento.setText("");
         txtNota1.setText("");
         txtNota2.setText("");
         txtNota3.setText("");
-        lblResultado.setText("Resultado: ");
-        lblResultado.setForeground(Color.black);
-
+        lblResultado.setText("Resultado:");
+        lblResultado.setForeground(COLOR_DEFAULT);
+        txtNombre.requestFocus();
     }
-    private void consultarLista(){
 
+    private void consultarLista() {
+        String listaConsultada = miModeloDatos.imprimirListaEstudiantes();
+        if (listaConsultada.equals("DATOS ESTUDIANTES\n")) {
+            JOptionPane.showMessageDialog(this, "No hay estudiantes registrados", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
-        String listaConsultada=miModeloDatos.imprimirListaEstudiantes();
-        textArea.setText(listaConsultada);
+        VentanaLista miVentanaLista = new VentanaLista();
+        miVentanaLista.setTextoLista(listaConsultada);
+        miVentanaLista.setVisible(true);
     }
-    private void consultaIndivual(){
 
+    private String consultaIndividual() {
+        try {
+            String documento = JOptionPane.showInputDialog(this, "Ingrese el documento del estudiante a consultar");
 
-        String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante a consultar");
+            if (documento == null || documento.trim().isEmpty()) {
+                return null;
+            }
 
-        Estudiante estudianteEncontrado=miModeloDatos.consultaEstudiante(nombre);
+            Estudiante estudiante = miModeloDatos.consultaEstudiante(documento.trim());
 
-        if(estudianteEncontrado!=null){
-            txtNombre.setText(estudianteEncontrado.getNombre());
-            txtMateria.setText(estudianteEncontrado.getMateria());
-            txtNota1.setText(estudianteEncontrado.getNota1()+"");
-            txtNota2.setText(estudianteEncontrado.getNota2()+"");
-            txtNota3.setText(estudianteEncontrado.getNota3()+"");
-            lblResultado.setText("El promedio es : "+estudianteEncontrado.getPromedio());
-        }else{
-            JOptionPane.showMessageDialog(null,"No se encuentra el estudiante","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+            if (estudiante != null) {
+                mostrarEstudianteEnFormulario(estudiante);
+                return documento;
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encuentra el estudiante", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+        } catch (Exception e) {
+            mostrarError("Error al consultar: " + e.getMessage());
+            return null;
         }
     }
+
+    private void mostrarEstudianteEnFormulario(Estudiante estudiante) {
+        txtNombre.setText(estudiante.getNombre());
+        txtMateria.setText(estudiante.getMateria());
+        txtDocumento.setText(estudiante.getDocumento());
+        txtNota1.setText(String.valueOf(estudiante.getNota1()));
+        txtNota2.setText(String.valueOf(estudiante.getNota2()));
+        txtNota3.setText(String.valueOf(estudiante.getNota3()));
+
+        String resultMessage = "El promedio es: " + estudiante.getPromedio();
+        lblResultado.setText(resultMessage);
+        lblResultado.setForeground(estudiante.getPromedio() < 3.5 ? COLOR_ERROR : COLOR_SUCCESS);
+    }
+
+    private void eliminarEstudiante() {
+        try {
+            String documento = JOptionPane.showInputDialog(this, "Ingrese el documento del estudiante a eliminar");
+
+            if (documento == null || documento.trim().isEmpty()) {
+                return;
+            }
+
+            Estudiante estudiante = miModeloDatos.consultaEstudiante(documento.trim());
+            if (estudiante == null) {
+                JOptionPane.showMessageDialog(this, "No se encuentra el estudiante", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Está seguro de eliminar a " + estudiante.getNombre() + "?",
+                    "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                miModeloDatos.eliminarEstudiante(documento.trim());
+                JOptionPane.showMessageDialog(this, "Estudiante eliminado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+                limpiar();
+            }
+        } catch (Exception e) {
+            mostrarError("Error al eliminar: " + e.getMessage());
+        }
+    }
+
+    private void actualizarEstudiante() {
+        try {
+            if (!validateRequiredFields()) {
+                return;
+            }
+
+            Estudiante miEstudiante = createEstudianteFromForm();
+            if (miEstudiante == null) {
+                return;
+            }
+
+            if (miModeloDatos.consultaEstudiante(miEstudiante.getDocumento()) == null) {
+                mostrarError("No existe un estudiante con el documento " + miEstudiante.getDocumento());
+                return;
+            }
+
+            double promedio = misProcesos.calcularPromedio(miEstudiante);
+            miEstudiante.setPromedio(promedio);
+
+            if (promedio >= 0) {
+                displayResult(miEstudiante);
+                updateStudent(miEstudiante);
+            } else {
+                mostrarError("Revise los datos, porque no pueden ser negativos ni mayores a 5");
+            }
+        } catch (Exception ex) {
+            mostrarError("Error al actualizar: " + ex.getMessage());
+        }
+    }
+
+    private void updateStudent(Estudiante estudiante) {
+        String resultado = miModeloDatos.actualizarEstudiante(estudiante);
+        if (Objects.equals(resultado, "ok")) {
+            JOptionPane.showMessageDialog(this, "Estudiante actualizado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, resultado, "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void mostrarError(String message) {
+        lblResultado.setText(message);
+        lblResultado.setForeground(COLOR_ERROR);
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }
-
-

@@ -7,15 +7,23 @@ public class Estudiante {
     private double nota2;
     private double nota3;
     private double promedio;
+    private String Documento;
     public Estudiante() {
     }
-    public Estudiante(String nombre, String materia, double nota1, double nota2, double nota3, double promedio) {
+    public Estudiante(String nombre, String materia, double nota1, double nota2, double nota3, double promedio,String Documento) {
         this.nombre = nombre;
         this.materia = materia;
+        this.Documento = Documento;
         this.nota1 = nota1;
         this.nota2 = nota2;
         this.nota3 = nota3;
         this.promedio=promedio;
+    }
+    public String getDocumento() {
+        return Documento;
+    }
+    public void setDocumento(String Documento) {
+        this.Documento = Documento;
     }
     public String getNombre() {
         return nombre;
