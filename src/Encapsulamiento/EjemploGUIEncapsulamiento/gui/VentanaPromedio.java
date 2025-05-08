@@ -28,7 +28,7 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
 
     public VentanaPromedio() {
         misProcesos=new Procesos();
-        ModeloDatos miModeloDatos = new ModeloDatos();
+        miModeloDatos = new ModeloDatos();
         setTitle("Promedio estudiantes");
         setSize(659, 572);
         getContentPane().setLayout(null);
@@ -43,6 +43,7 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
         lblTitulo.setFont(new Font("Verdana", Font.BOLD, 25));
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
         lblTitulo.setBounds(10, 26, 606, 59);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         JLabel lblMateria = new JLabel("Materia:");
         lblMateria.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblMateria.setBounds(348, 117, 72, 22);
@@ -83,19 +84,22 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
         btnLimpiar.addActionListener(this);
 
         btnConsultaIndividual =new JButton("Consultar");
-        btnConsultaIndividual.setBounds(375,275,112,21);
+        btnConsultaIndividual.setBounds(375,225,112,21);
         btnConsultaIndividual.addActionListener(this);
+        add(btnConsultaIndividual);
 
         btnLista = new JButton("lista");
-        btnLista.setBounds(498,275,112,21);
+        btnLista.setBounds(498,225,112,21);
         btnLista.addActionListener(this);
+        add(btnLista);
 
         scrollPane = new JScrollPane();
         scrollPane.setBounds(30,319,586,206);
+        add(scrollPane);
 
         textArea =new JTextArea();
         scrollPane.setViewportView(textArea);
-
+        add(scrollPane);
         add(lblTitulo);
         add(lblMateria);
         add(txtMateria);
@@ -131,6 +135,7 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
     }
     private void calcular() {
         Estudiante miEstudiante=new Estudiante();
+
         miEstudiante.setNombre(txtNombre.getText());
         miEstudiante.setMateria(txtMateria.getText());
         miEstudiante.setNota1(Double.parseDouble(txtNota1.getText())); ;
@@ -153,6 +158,7 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
         System.out.println("EL promedio es: "+promedio);
 
 
+
     }
     private void limpiar() {
         txtNombre.setText("");
@@ -165,11 +171,16 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
 
     }
     private void consultarLista(){
+
+
         String listaConsultada=miModeloDatos.imprimirListaEstudiantes();
         textArea.setText(listaConsultada);
     }
     private void consultaIndivual(){
+
+
         String nombre = JOptionPane.showInputDialog("Ingrese el nombre del estudiante a consultar");
+
         Estudiante estudianteEncontrado=miModeloDatos.consultaEstudiante(nombre);
 
         if(estudianteEncontrado!=null){
@@ -184,4 +195,5 @@ public class VentanaPromedio extends JFrame  implements ActionListener {
         }
     }
 }
+
 
