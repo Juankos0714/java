@@ -147,11 +147,8 @@ public class VentanaPromedio extends JFrame {
         add(containerPanel);
     }
 
-    private JButton createButton(String text, ActionListener listener) {
-        JButton button = new JButton(text);
-        button.addActionListener(listener);
-        return button;
-    }
+
+
 
     private void calcular() {
         try {
