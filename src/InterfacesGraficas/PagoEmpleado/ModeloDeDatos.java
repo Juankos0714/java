@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModeloDeDatos {
-    // Estructuras de datos para almacenar empleados
     private ArrayList<Persona> personasList;
     private HashMap<String, Persona> personasMap;
 
     public ModeloDeDatos() {
-        // Initialize with initial capacity for better performance if expected size is known
         personasList = new ArrayList<Persona>();
         personasMap = new HashMap<String, Persona>();
     }
@@ -27,48 +25,6 @@ public class ModeloDeDatos {
         personasMap.put(documento, copyPersona(persona));
         personasList.add(copyPersona(persona));
         return "ok";
-    }
-
-    public Persona consultarPersona(String documento) {
-        if (documento == null || documento.trim().isEmpty()) {
-            return null;
-        }
-
-        Persona persona = personasMap.get(documento.trim());
-
-        return persona != null ? copyPersona(persona) : null;
-    }
-
-    public String imprimirListaPersonas() {
-        StringBuilder msj = new StringBuilder("DATOS EMPLEADOS\n");
-
-        if (personasMap.isEmpty()) {
-            return msj.toString();
-        }
-
-        personasList.stream()
-                .sorted((e1, e2) -> e1.getNombre().compareToIgnoreCase(e2.getNombre()))
-                .forEach(persona -> {
-                    msj.append("Nombre: ").append(persona.getNombre())
-                            .append(", Documento: ").append(persona.getDocumento())
-                            .append(", Categoría: ").append(persona.getCategoria())
-                            .append(", Salario: ").append(formatMoney(persona.getSalarioActual()))
-                            .append("\n");
-                    msj.append("Bonificación: ").append(formatPorcentaje(persona.getBonificacion()))
-                            .append(", Descuento: ").append(formatPorcentaje(persona.getDescuento()))
-                            .append(", Valor a pagar: ").append(formatMoney(persona.getValorPago()))
-                            .append("\n\n");
-                });
-
-        return msj.toString();
-    }
-
-    private String formatMoney(double valor) {
-        return String.format("$%.2f", valor);
-    }
-
-    private String formatPorcentaje(double valor) {
-        return String.format("%.2f%%", valor * 100);
     }
 
     public boolean eliminarPersona(String documento) {
