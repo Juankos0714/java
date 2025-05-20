@@ -7,11 +7,81 @@ public class Persona {
     double peso;
     double talla;
     double imc;
-    String estado; // Para almacenar el resultado del IMC (e.g., "Normalidad", "Anorexia")
-    String mensaje; // Para almacenar recomendaciones adicionales
+    String estado;
+    String mensaje;
 
-    // Constructor
-    public Persona() {
-        // Initialize if necessary
+    public Persona(String nombre, int edad, double peso, double talla, double imc, String estado, String mensaje) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.peso = peso;
+        this.talla = talla;
+        this.imc = imc;
+        this.estado = estado;
+        this.mensaje = mensaje;
     }
+
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public double getTalla() {
+        return talla;
+    }
+
+    public void setTalla(double talla) {
+        this.talla = talla;
+    }
+
+    public double getImc() {
+        return imc;
+    }
+
+    public void setImc(double imc) {
+        this.imc = imc;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+
+
+
+
+
+
 }
