@@ -1,5 +1,7 @@
 package InterfacesGraficas.IMC;
 
+import EjercicioModeloDatosMVC.src.controlador.Coordinador;
+
 public class Procesos {
 
     public Procesos() {
@@ -41,4 +43,5 @@ public class Procesos {
             persona.mensaje = "Verifique el peso y la talla ingresados. Deben ser mayores a cero.";
         }
     }
+
 }
