@@ -19,8 +19,27 @@ public class Relaciones {
 		ConexionBD miConexionBD=new ConexionBD();
 		Coordinador miCoordinador =new Coordinador();
 
+		ventanaPrincipal.setCoordinador(miCoordinador);
+		ventanaRegistro.setCoordinador(miCoordinador);
+		ventanaOperaciones.setCoordinador(miCoordinador);
+		ventanaConsultaIndividual.setCoordinador(miCoordinador);
+		ventanaConsultarLista.setCoordinador(miCoordinador);
+		miPersonaDAO.setCoordinador(miCoordinador);
+		miConexionBD.setCoordinador(miCoordinador);
+		misProcesos.setCoordinador(miCoordinador);
+
+		miCoordinador.setVentanaPrincipal(ventanaPrincipal);
+		miCoordinador.setVentanaRegistro(ventanaRegistro);
+		miCoordinador.setVentanaOperaciones(ventanaOperaciones);
+		miCoordinador.setVentanaConsultaIndividual(ventanaConsultaIndividual);
+		miCoordinador.setVentanaConsultarLista(ventanaConsultarLista);
+		miCoordinador.setProcesos(misProcesos);
+		miCoordinador.setMiPersonaDAO(miPersonaDAO);
+		miCoordinador.setMiConexionBD(miConexionBD);
 
 
+		// Mostrar ventana principal
+		miCoordinador.mostrarVentanaPrincipal();
 	}
 
 }

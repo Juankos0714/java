@@ -1,5 +1,7 @@
 package EjemploMVCPersona.src.vista;
 
+import EjemploMVCPersona.src.controlador.Coordinador;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -124,5 +126,8 @@ public class VentanaOperaciones extends JDialog {
 		}
 		
 	}
+
+    public void setCoordinador(Coordinador miCoordinador) {
+    }
 }
 

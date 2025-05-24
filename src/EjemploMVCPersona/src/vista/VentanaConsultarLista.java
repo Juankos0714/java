@@ -1,5 +1,7 @@
 package EjemploMVCPersona.src.vista;
 
+import EjemploMVCPersona.src.controlador.Coordinador;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -72,4 +74,6 @@ public class VentanaConsultarLista extends JDialog {
 		contentPane.add(scrollPane);
 	}
 
+    public void setCoordinador(Coordinador miCoordinador) {
+    }
 }
