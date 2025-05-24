@@ -22,12 +22,12 @@ public class VentanaOperaciones extends JDialog {
 	private JLabel lblNumero1;
 	private JLabel lblNumero2;
 	private JLabel lblTitulo;
+    private Coordinador miCoordinador;
+
 
 
     public VentanaOperaciones(VentanaRegistro ventanaOperaciones, boolean modal) {
-    	/**Al llamar al constructor super(), le enviamos el
-    	  * JFrame Padre y la propiedad booleana que determina
-    	  * que es hija*/
+
     	super(ventanaOperaciones, modal);
     	  
         setTitle("Ventana de Consulta");
@@ -96,7 +96,65 @@ public class VentanaOperaciones extends JDialog {
         lblTitulo.setBounds(6, 6, 388, 30);
         getContentPane().add(lblTitulo);
 
+        btnCalcular.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                realizarCalculo();
+            }
+        });
+
+        datosArea = new JTextArea();
+        datosArea.setBounds(50, 164, 300, 60);
+        datosArea.setEditable(false);
+        getContentPane().add(datosArea);
+
 	}
+    public void setCoordinador(Coordinador miCoordinador) {
+        this.miCoordinador=miCoordinador;
+    }
+    private void realizarCalculo() {
+        // Obtener valores de los campos
+        String num1 = txtNum1.getText().trim();
+        String num2 = txtNum2.getText().trim();
+
+        // Validar campos numéricos usando el coordinador
+        boolean validarNum1 = miCoordinador.validarNumero(num1);
+        boolean validarNum2 = miCoordinador.validarNumero(num2);
+
+        // Cambiar colores según validación
+        verificaCampo(validarNum1, txtNum1);
+        verificaCampo(validarNum2, txtNum2);
+
+        // Validar que se haya seleccionado una operación
+        String operacionSeleccionada = validarSeleccion();
+        boolean hayOperacionSeleccionada = !operacionSeleccionada.isEmpty();
+
+        // Validación visual para radiobuttons
+        validarSeleccionOperacion(hayOperacionSeleccionada);
+
+        if (validarNum1 && validarNum2 && hayOperacionSeleccionada) {
+            // Realizar el cálculo a través del coordinador
+            String resultado = miCoordinador.calcularOperacion(operacionSeleccionada, num1, num2);
+            datosArea.setText(resultado);
+        } else {
+            // Mostrar mensaje de error
+            String mensaje = "";
+            if (!validarNum1 || !validarNum2) {
+                mensaje += "Por favor ingrese números válidos (no negativos). ";
+            }
+            if (!hayOperacionSeleccionada) {
+                mensaje += "Debe seleccionar una operación.";
+            }
+            datosArea.setText(mensaje);
+        }
+    }
+    private void validarSeleccionOperacion(boolean haySeleccion) {
+        Color color = haySeleccion ? Color.BLACK : Color.RED;
+        rbtnSuma.setForeground(color);
+        rbtnResta.setForeground(color);
+        rbtnMultiplicacion.setForeground(color);
+        rbtnDivision.setForeground(color);
+    }
 
     private String validarSeleccion() {
     	String operacion="";
@@ -127,7 +185,6 @@ public class VentanaOperaciones extends JDialog {
 		
 	}
 
-    public void setCoordinador(Coordinador miCoordinador) {
-    }
+
 }
 

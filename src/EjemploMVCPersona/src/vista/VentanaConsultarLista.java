@@ -1,6 +1,7 @@
 package EjemploMVCPersona.src.vista;
 
 import EjemploMVCPersona.src.controlador.Coordinador;
+import EjemploMVCPersona.src.modelo.dto.PersonaDTO;
 
 import java.awt.EventQueue;
 
@@ -21,22 +22,24 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-public class VentanaConsultarLista extends JDialog {
+
+public class VentanaConsultarLista extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private Coordinador miCoordinador;
 	private JTextArea txtAreaResultado;
 
 
 	/**
 	 * Create the frame.
 	 * @param
-	 * @param ventanaPrincipal 
+	 * @param ventanaPrincipal
 	 */
 	public VentanaConsultarLista(VentanaPrincipal ventanaPrincipal, boolean modal) {
 		/**Al llamar al constructor super(), le enviamos el
-   	  * JFrame Padre y la propiedad booleana que determina
-   	  * que es hija*/
+		 * JFrame Padre y la propiedad booleana que determina
+		 * que es hija*/
 		super(ventanaPrincipal, modal);
 		setBounds(100, 100, 453, 327);
 		contentPane = new JPanel();
@@ -46,13 +49,29 @@ public class VentanaConsultarLista extends JDialog {
 		contentPane.setLayout(null);
 
 		setLocationRelativeTo(null);
-		
+
 
 		iniciarComponentes();
 
 	}
 
 
+	public void consultarListaPersonas() {
+		ArrayList<PersonaDTO> listaPersonas=miCoordinador.consultarListaPersonas();
+		String msj="";
+		if (listaPersonas.size()>0) {
+
+			for (PersonaDTO personaDTO : listaPersonas) {
+				msj+="Documento: "+personaDTO.getDocumento()+"\nNombre: "+personaDTO.getNombre()+"\nedad: "+personaDTO.getEdad()+"\n\n";
+			}
+
+		}else {
+			msj="NO HAY PERSONAS REGISTRADAS";
+		}
+
+		txtAreaResultado.setText(msj);
+
+	}
 
 
 	private void iniciarComponentes() {
@@ -61,7 +80,7 @@ public class VentanaConsultarLista extends JDialog {
 		lblSistemaGestionUsuarios.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 		lblSistemaGestionUsuarios.setBounds(33, 6, 388, 30);
 		contentPane.add(lblSistemaGestionUsuarios);
-		
+
 		txtAreaResultado = new JTextArea();
 		txtAreaResultado.setColumns(5);
 		txtAreaResultado.setLineWrap(true); // Opcional: para que las líneas largas se ajusten al ancho
@@ -74,6 +93,14 @@ public class VentanaConsultarLista extends JDialog {
 		contentPane.add(scrollPane);
 	}
 
-    public void setCoordinador(Coordinador miCoordinador) {
-    }
+
+	public void setCoordinador(Coordinador miCoordinador) {
+		this.miCoordinador=miCoordinador;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	}
+
 }

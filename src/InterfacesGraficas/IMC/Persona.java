@@ -20,7 +20,9 @@ public class Persona {
         this.mensaje = mensaje;
     }
 
+    public Persona() {
 
+    }
 
 
     public String getNombre() {
