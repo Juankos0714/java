@@ -1,230 +1,219 @@
 package MVC_IMC.vista;
 
 import MVC_IMC.controlador.Coordinador;
-import MVC_IMC.modelo.Procesos;
 import MVC_IMC.modelo.dto.PersonaDTO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class VentanaCalculo extends JDialog implements ActionListener {
 
-    private JLabel lblTitulo, lblNombre, lblEdad, lblPeso, lblTalla, lblResultadoHeader;
-    private JTextField txtNombre, txtEdad, txtPeso, txtTalla;
-    private JButton btnCalcular, btnLimpiar;
+    private Coordinador miCoordinador;
+    private JLabel lblTitulo, lblPersona, lblPeso, lblTalla;
+    private JComboBox<String> cmbPersonas;
+    private JTextField txtPeso, txtTalla;
+    private JButton btnCalcular, btnCerrar, btnActualizar;
     private JTextArea areaResultado;
-    private JPanel panelPrincipal;
-
-    private Procesos misProcesos;
 
     public VentanaCalculo(VentanaPrincipal ventanaPrincipal, boolean modal) {
-        /**Al llamar al constructor super(), le enviamos el
-         * JFrame Padre y la propiedad booleana que determina
-         * que es hija*/
         super(ventanaPrincipal, modal);
-        setTitle("Ventana Registro Persona");
-        setSize(382, 277);
-        getContentPane().setLayout(null);
-        setLocationRelativeTo(null);
-
-        misProcesos = new Procesos();
         initComponents();
         setupLayout();
         setupListeners();
+        cargarPersonas();
     }
 
     private void initComponents() {
-        setTitle("Calculadora de IMC");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 600);
+        setTitle("Calcular IMC");
+        setSize(450, 400);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new GridBagLayout());
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-
-        lblTitulo = new JLabel("Calculadora de Índice de Masa Corporal");
+        lblTitulo = new JLabel("Cálculo de IMC");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setHorizontalAlignment(JLabel.CENTER);
+        lblTitulo.setForeground(new Color(0, 102, 204));
 
-        lblNombre = new JLabel("Nombre:");
-        txtNombre = new JTextField(20);
-
-        lblEdad = new JLabel("Edad (años):");
-        txtEdad = new JTextField(5);
+        lblPersona = new JLabel("Persona:");
+        cmbPersonas = new JComboBox<>();
+        cmbPersonas.setPreferredSize(new Dimension(200, 25));
 
         lblPeso = new JLabel("Peso (kg):");
-        txtPeso = new JTextField(5);
+        txtPeso = new JTextField(10);
 
-        lblTalla = new JLabel("Talla (metros ej: 1.75):");
-        txtTalla = new JTextField(5);
+        lblTalla = new JLabel("Talla (metros):");
+        txtTalla = new JTextField(10);
 
         btnCalcular = new JButton("Calcular IMC");
-        btnLimpiar = new JButton("Limpiar Campos");
+        btnCalcular.setBackground(new Color(0, 102, 204));
+        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.setFont(new Font("Arial", Font.BOLD, 12));
 
-        lblResultadoHeader = new JLabel("Resultado:");
-        lblResultadoHeader.setFont(new Font("Arial", Font.BOLD, 14));
+        btnActualizar = new JButton("↻");
+        btnActualizar.setBackground(new Color(102, 153, 255));
+        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setToolTipText("Actualizar lista");
+
+        btnCerrar = new JButton("Cerrar");
+        btnCerrar.setBackground(new Color(204, 0, 0));
+        btnCerrar.setForeground(Color.WHITE);
+
         areaResultado = new JTextArea(8, 30);
         areaResultado.setEditable(false);
         areaResultado.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        areaResultado.setLineWrap(true);
-        areaResultado.setWrapStyleWord(true);
+        areaResultado.setBackground(new Color(245, 245, 245));
+        areaResultado.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
     private void setupLayout() {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        setLayout(new BorderLayout());
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        JPanel panelPrincipal = new JPanel(new GridBagLayout());
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(8, 8, 8, 8);
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(lblTitulo, gbc);
 
-        gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panelPrincipal.add(lblNombre, gbc);
-
+        gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelPrincipal.add(lblPersona, gbc);
         gbc.gridx = 1;
-        gbc.gridy = 1;
-        panelPrincipal.add(txtNombre, gbc);
+        panelPrincipal.add(cmbPersonas, gbc);
+        gbc.gridx = 2;
+        panelPrincipal.add(btnActualizar, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panelPrincipal.add(lblEdad, gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        panelPrincipal.add(txtEdad, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridx = 0; gbc.gridy = 2;
         panelPrincipal.add(lblPeso, gbc);
-
         gbc.gridx = 1;
-        gbc.gridy = 3;
         panelPrincipal.add(txtPeso, gbc);
 
-        gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridx = 0; gbc.gridy = 3;
         panelPrincipal.add(lblTalla, gbc);
-
         gbc.gridx = 1;
-        gbc.gridy = 4;
         panelPrincipal.add(txtTalla, gbc);
 
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel panelBotones = new JPanel(new FlowLayout());
         panelBotones.add(btnCalcular);
-        panelBotones.add(btnLimpiar);
+        panelBotones.add(btnCerrar);
 
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(panelBotones, gbc);
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(lblResultadoHeader, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        gbc.gridwidth = 2;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        panelPrincipal.add(new JScrollPane(areaResultado), gbc);
-
-        add(panelPrincipal);
+        add(panelPrincipal, BorderLayout.NORTH);
+        add(new JScrollPane(areaResultado), BorderLayout.CENTER);
     }
 
     private void setupListeners() {
         btnCalcular.addActionListener(this);
-        btnLimpiar.addActionListener(this);
+        btnCerrar.addActionListener(this);
+        btnActualizar.addActionListener(this);
+        txtPeso.addActionListener(this);  // Enter va a talla
+        txtTalla.addActionListener(this); // Enter calcula
+    }
+
+    private void cargarPersonas() {
+        cmbPersonas.removeAllItems();
+        cmbPersonas.addItem("-- Seleccione una persona --");
+
+        if (miCoordinador != null) {
+            List<PersonaDTO> personas = miCoordinador.obtenerTodasLasPersonas();
+            if (personas != null) {
+                for (PersonaDTO persona : personas) {
+                    cmbPersonas.addItem(persona.getNombre());
+                }
+            }
+
+            if (personas == null || personas.isEmpty()) {
+                areaResultado.setText("No hay personas registradas.\n\n" +
+                        "Primero registre una persona usando la opción 'Registrar Persona'.");
+            }
+        }
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnCalcular) {
+        if (e.getSource() == btnCalcular || e.getSource() == txtTalla) {
             procesarCalculo();
-        } else if (e.getSource() == btnLimpiar) {
-            limpiarCampos();
+        } else if (e.getSource() == txtPeso) {
+            txtTalla.requestFocus(); // Pasar al siguiente campo
+        } else if (e.getSource() == btnCerrar) {
+            dispose();
+        } else if (e.getSource() == btnActualizar) {
+            cargarPersonas();
         }
     }
 
     private void procesarCalculo() {
-        String nombre = txtNombre.getText();
-        String edadStr = txtEdad.getText();
-        String pesoStr = txtPeso.getText();
-        String tallaStr = txtTalla.getText();
+        String personaSeleccionada = (String) cmbPersonas.getSelectedItem();
+        String pesoStr = txtPeso.getText().trim();
+        String tallaStr = txtTalla.getText().trim();
 
-        if (nombre.isEmpty() || edadStr.isEmpty() || pesoStr.isEmpty() || tallaStr.isEmpty()) {
-            areaResultado.setText("Por favor, complete todos los campos.");
+        if (personaSeleccionada == null || personaSeleccionada.equals("-- Seleccione una persona --")) {
+            JOptionPane.showMessageDialog(this, "Seleccione una persona.", "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (pesoStr.isEmpty() || tallaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Complete peso y talla.", "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            int edad = Integer.parseInt(edadStr);
             double peso = Double.parseDouble(pesoStr);
             double talla = Double.parseDouble(tallaStr);
 
-            if (edad <= 0 || peso <= 0 || talla <= 0) {
-                areaResultado.setText("La edad, el peso y la talla deben ser valores positivos.");
+            if (peso <= 0 || talla <= 0) {
+                JOptionPane.showMessageDialog(this, "Peso y talla deben ser positivos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
             if (talla > 3) {
-                areaResultado.setText("La talla parece estar en centímetros (ej: 175).\nPor favor, ingrese la talla en metros (ej: 1.75).");
+                JOptionPane.showMessageDialog(this, "Ingrese la talla en metros (ej: 1.75)", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            PersonaDTO persona = miCoordinador.consultarPersona(personaSeleccionada);
+            if (persona == null) {
+                JOptionPane.showMessageDialog(this, "Error: Persona no encontrada.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            PersonaDTO persona = new PersonaDTO();
-            persona.nombre = nombre;
-            persona.edad = edad;
-            persona.peso = peso;
-            persona.talla = talla;
+            persona.setPeso(peso);
+            persona.setTalla(talla);
+            persona = miCoordinador.calcularIMC(persona);
+            miCoordinador.actualizarPersona(persona);
 
-            misProcesos.calcularIMC(persona);
+            StringBuilder resultado = new StringBuilder();
+            resultado.append("RESULTADO DEL CÁLCULO\n");
+            resultado.append("================================\n\n");
+            resultado.append("Persona: ").append(persona.getNombre()).append("\n");
+            resultado.append("Edad: ").append(persona.getEdad()).append(" años\n");
+            resultado.append(String.format("Peso: %.1f kg\n", persona.getPeso()));
+            resultado.append(String.format("Talla: %.2f m\n", persona.getTalla()));
+            resultado.append(String.format("IMC: %.2f\n\n", persona.getImc()));
+            resultado.append("Estado: ").append(persona.getEstado()).append("\n\n");
+            resultado.append("Recomendación:\n").append(persona.getMensaje());
 
-            StringBuilder resultadoTexto = new StringBuilder();
-            resultadoTexto.append("Resultados para: ").append(persona.nombre).append("\n");
-            resultadoTexto.append("---------------------------------------\n");
-            resultadoTexto.append(String.format("Edad: %d años\n", persona.edad));
-            resultadoTexto.append(String.format("Peso: %.2f kg\n", persona.peso));
-            resultadoTexto.append(String.format("Talla: %.2f m\n", persona.talla));
-            resultadoTexto.append(String.format("IMC: %.2f\n", persona.imc)).append("\n");
-            resultadoTexto.append("Clasificación: ").append(persona.estado).append("\n");
-            resultadoTexto.append("Recomendación: ").append(persona.mensaje).append("\n");
-
-            areaResultado.setText(resultadoTexto.toString());
+            areaResultado.setText(resultado.toString());
+            areaResultado.setCaretPosition(0);
 
         } catch (NumberFormatException ex) {
-            areaResultado.setText("Error en el formato de los números.\n" +
-                    "Asegúrese de que la edad sea un número entero,\n" +
-                    "y el peso/talla sean números válidos (use '.' para decimales).");
+            JOptionPane.showMessageDialog(this,
+                    "Use números válidos (punto para decimales).",
+                    "Error de formato",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void limpiarCampos() {
-        txtNombre.setText("");
-        txtEdad.setText("");
-        txtPeso.setText("");
-        txtTalla.setText("");
-        areaResultado.setText("");
-        txtNombre.requestFocus();
-    }
-
     public void setCoordinador(Coordinador miCoordinador) {
+        this.miCoordinador = miCoordinador;
     }
 }
