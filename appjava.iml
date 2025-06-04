@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/EjemploMVCPersona/src/conector/mysql-connector-j-9.3.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/src/TrabajoComboBox/conector/mysql-connector-j-9.3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
