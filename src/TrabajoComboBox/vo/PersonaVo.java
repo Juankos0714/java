@@ -7,25 +7,32 @@ public class PersonaVo {
     private String direccion;
 
     public PersonaVo() {
+        this.documento = "";
+        this.nombre = "";
+        this.edad = 0;
+        this.direccion = "";
     }
 
-    public PersonaVo(String s, String s1, int i) {
+    public PersonaVo(String documento, String nombre, int edad) {
+        this.documento = documento != null ? documento : "";
+        this.nombre = nombre != null ? nombre : "";
+        this.edad = edad;
+        this.direccion = "";
     }
 
+    public PersonaVo(String documento, String nombre, int edad, String direccion) {
+        this.documento = documento != null ? documento : "";
+        this.nombre = nombre != null ? nombre : "";
+        this.edad = edad;
+        this.direccion = direccion != null ? direccion : "";
+    }
 
     public String getDireccion() {
         return direccion;
     }
 
     public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public PersonaVo(String documento, String nombre, int edad, String direccion) {
-        this.documento = documento;
-        this.nombre = nombre;
-        this.edad = edad;
-        this.direccion= direccion;
+        this.direccion = direccion != null ? direccion : "";
     }
 
     public String getDocumento() {
@@ -33,7 +40,7 @@ public class PersonaVo {
     }
 
     public void setDocumento(String documento) {
-        this.documento = documento;
+        this.documento = documento != null ? documento : "";
     }
 
     public String getNombre() {
@@ -41,7 +48,7 @@ public class PersonaVo {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.nombre = nombre != null ? nombre : "";
     }
 
     public int getEdad() {
@@ -54,10 +61,10 @@ public class PersonaVo {
 
     @Override
     public String toString() {
-        if (documento.isEmpty()) {
-            return nombre;
+        if (documento == null || documento.isEmpty()) {
+            return nombre != null ? nombre : "";
         }
-        return nombre + " - " + documento;
+        return (nombre != null ? nombre : "") + " - " + documento;
     }
 }
 
