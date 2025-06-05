@@ -27,6 +27,8 @@ public class PersonaDAO {
                 preStatement.setString(1, persona.getDocumento());
                 preStatement.setString(2, persona.getNombre());
                 preStatement.setInt(3, persona.getEdad());
+                preStatement.setString(4, persona.getDireccion());
+
                 preStatement.execute();
                 resultado = "Persona registrada exitosamente";
             } else {
@@ -66,6 +68,8 @@ public class PersonaDAO {
                     persona.setDocumento(result.getString("documento"));
                     persona.setNombre(result.getString("nombre"));
                     persona.setEdad(result.getInt("edad"));
+                    persona.setDireccion(result.getString("Direccion"));
+
                     listaPersonas.add(persona);
                 }
             }
@@ -104,6 +108,8 @@ public class PersonaDAO {
                     persona.setDocumento(result.getString("documento"));
                     persona.setNombre(result.getString("nombre"));
                     persona.setEdad(result.getInt("edad"));
+                    persona.setDireccion(result.getString("Direccion"));
+
                 }
             }
         } catch (SQLException e) {
