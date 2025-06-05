@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class VentanaCombo extends JFrame implements ActionListener {
 
-    private JTextField txtDocumento, txtNombre, txtEdad;
+    private JTextField txtDocumento, txtNombre, txtEdad, txtDireccion;
     private JButton btnRegistrar, btnConsultar;
     private JComboBox<PersonaVo> comboPersonas;
     private JTable tablaPersonas;
@@ -56,6 +56,14 @@ public class VentanaCombo extends JFrame implements ActionListener {
         gbc.gridx = 1;
         txtNombre = new JTextField(15);
         panelRegistro.add(txtNombre, gbc);
+
+        // Direccion
+
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelRegistro.add(new JLabel("Direccion:"), gbc);
+        gbc.gridx = 1;
+        txtDireccion = new JTextField(15);
+        panelRegistro.add(txtDireccion, gbc);
 
         // Edad
         gbc.gridx = 0; gbc.gridy = 2;
@@ -136,8 +144,9 @@ public class VentanaCombo extends JFrame implements ActionListener {
             String documento = txtDocumento.getText().trim();
             String nombre = txtNombre.getText().trim();
             String edadStr = txtEdad.getText().trim();
+            String direccion = txtDireccion.getText().trim();
 
-            if (documento.isEmpty() || nombre.isEmpty() || edadStr.isEmpty()) {
+            if (documento.isEmpty() || nombre.isEmpty() || edadStr.isEmpty() || direccion.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios",
                         "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -145,7 +154,7 @@ public class VentanaCombo extends JFrame implements ActionListener {
 
             int edad = Integer.parseInt(edadStr);
 
-            PersonaVo persona = new PersonaVo(documento, nombre, edad);
+            PersonaVo persona = new PersonaVo(documento, nombre, edad, direccion);
             String resultado = personaDAO.registrarPersona(persona);
 
             JOptionPane.showMessageDialog(this, resultado, "Resultado",
@@ -173,6 +182,7 @@ public class VentanaCombo extends JFrame implements ActionListener {
         PersonaVo persona = personaDAO.consultarPersonaPorDocumento(documento);
         if (persona != null) {
             txtNombre.setText(persona.getNombre());
+            txtDireccion.setText(persona.getDireccion());
             txtEdad.setText(String.valueOf(persona.getEdad()));
         } else {
             JOptionPane.showMessageDialog(this, "No se encontró una persona con ese documento",
@@ -209,7 +219,8 @@ public class VentanaCombo extends JFrame implements ActionListener {
             Object[] fila = {
                     persona.getDocumento(),
                     persona.getNombre(),
-                    persona.getEdad()
+                    persona.getEdad(),
+                    persona.getDireccion()
             };
             modelo.addRow(fila);
         }
@@ -231,6 +242,7 @@ public class VentanaCombo extends JFrame implements ActionListener {
         txtDocumento.setText("");
         txtNombre.setText("");
         txtEdad.setText("");
+        txtDireccion.setText("");
     }
 
     public void setCoordinador(Coordinador coordinador) {
