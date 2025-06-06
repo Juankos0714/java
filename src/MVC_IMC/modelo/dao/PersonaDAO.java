@@ -184,6 +184,49 @@ public ArrayList<PersonaDTO> consultarPersonas() {
                 statement = connection.prepareStatement(consulta);
                 statement.setString(1, documento);
                 result = statement.executeQuery();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en la consulta del usuario: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+                conexion.desconectar();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar conexión: " + e.getMessage());
+            }
+        }
+        return existe;
+    }
+
+
+    public void setCoordinador(Coordinador miCoordinador) {
+        this.miCoordinador = miCoordinador;
+    }
+
+    public void setConexionBD(ConexionBD conexionBD) {
+        this.miConexionBD = conexionBD;
+    }
+
+    public ConexionBD getConexionBD() {
+        return miConexionBD;
+    }
+    public String actualizarPersona(String documento) {
+
+        Connection connection = null;
+        Conexion conexion = new Conexion();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        PersonaDTO persona = null;
+
+        try {
+            connection = conexion.getConnection();
+            if (connection != null) {
+                String consulta = "SELECT * FROM personas WHERE documento = ?";
+                statement = connection.prepareStatement(consulta);
+                statement.setString(1, documento);
+                result = statement.executeQuery();
 
                 if (result.next()) {
                     persona = new PersonaDTO();
@@ -205,55 +248,8 @@ public ArrayList<PersonaDTO> consultarPersonas() {
                 System.out.println("Error al cerrar conexión: " + e.getMessage());
             }
         }
-        return existe;
+        return persona;
     }
-
-
-    public void mostrarEstadisticas() {
-        try {
-            List<PersonaDTO> todasLasPersonas = consultarTodasLasPersonas();
-            System.out.println("\n=== ESTADÍSTICAS DE LA BASE DE DATOS ===");
-            System.out.println("Total de personas registradas: " + todasLasPersonas.size());
-
-            java.util.Map<String, Integer> estadosCount = new java.util.HashMap<>();
-            for (PersonaDTO persona : todasLasPersonas) {
-                String estado = persona.getEstado();
-                estadosCount.put(estado, estadosCount.getOrDefault(estado, 0) + 1);
-            }
-
-            System.out.println("\nDistribución por estados:");
-            for (java.util.Map.Entry<String, Integer> entry : estadosCount.entrySet()) {
-                System.out.println("- " + entry.getKey() + ": " + entry.getValue() + " personas");
-            }
-            System.out.println("========================================\n");
-        } catch (Exception e) {
-            System.err.println("Error al mostrar estadísticas: " + e.getMessage());
-        }
-    }
-
-    public void setCoordinador(Coordinador miCoordinador) {
-        this.miCoordinador = miCoordinador;
-    }
-
-    public void setConexionBD(ConexionBD conexionBD) {
-        this.miConexionBD = conexionBD;
-    }
-
-    public ConexionBD getConexionBD() {
-        return miConexionBD;
-    }
-    public String actualizarPersona(PersonaDTO persona) {
-
-        String resp="";
-        System.out.println(persona);
-        if (ConexionBD.personasMap.containsKey(persona.getNombre())) {
-            ConexionBD.personasMap.put(persona.getNombre(), persona);
-            resp="ok";
-        } else {
-            resp="error";
-        }
-
-        return resp;
 
     }
 }
