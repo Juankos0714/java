@@ -140,6 +140,42 @@ public ArrayList<PersonaDTO> consultarPersonas() {
         PreparedStatement statement = null;
         ResultSet result = null;
         PersonaDTO persona = null;
+        boolean eliminacion =false;
+
+        try {
+            connection = conexion.getConnection();
+            if (connection != null) {
+                String consulta = "DELETE * FROM personas WHERE documento = ?";
+                statement = connection.prepareStatement(consulta);
+                statement.setString(1, documento);
+                result = statement.executeQuery();
+                eliminacion=true;
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al encontrar el usuario del usuario: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+                conexion.desconectar();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar conexión: " + e.getMessage());
+            }
+        }
+        return eliminacion;
+    }
+
+
+
+    public boolean existePersona(String documento) {
+        Connection connection = null;
+        Conexion conexion = new Conexion();
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        PersonaDTO persona = null;
+        boolean existe=false;
 
         try {
             connection = conexion.getConnection();
@@ -169,55 +205,9 @@ public ArrayList<PersonaDTO> consultarPersonas() {
                 System.out.println("Error al cerrar conexión: " + e.getMessage());
             }
         }
-        return false;
+        return existe;
     }
 
-    public int obtenerTotalPersonas() {
-        try {
-            return miConexionBD.obtenerTotalPersonas();
-        } catch (Exception e) {
-            System.err.println("Error al obtener total de personas: " + e.getMessage());
-            return 0;
-        }
-    }
-
-    public List<PersonaDTO> consultarPersonasPorEstado(String estado) {
-        List<PersonaDTO> personasFiltradas = new ArrayList<>();
-
-        if (estado == null || estado.trim().isEmpty()) {
-            System.out.println("Error: Estado no puede estar vacío");
-            return personasFiltradas;
-        }
-
-        try {
-            List<PersonaDTO> todasLasPersonas = miConexionBD.obtenerTodasLasPersonas();
-            for (PersonaDTO persona : todasLasPersonas) {
-                if (persona.getEstado() != null &&
-                        persona.getEstado().equalsIgnoreCase(estado.trim())) {
-                    personasFiltradas.add(persona);
-                }
-            }
-            System.out.println("Encontradas " + personasFiltradas.size() +
-                    " personas con estado: " + estado);
-        } catch (Exception e) {
-            System.err.println("Error al consultar personas por estado: " + e.getMessage());
-        }
-
-        return personasFiltradas;
-    }
-
-    public boolean existePersona(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
-        }
-
-        try {
-            return miConexionBD.existePersona(nombre);
-        } catch (Exception e) {
-            System.err.println("Error al verificar existencia de persona: " + e.getMessage());
-            return false;
-        }
-    }
 
     public void mostrarEstadisticas() {
         try {
