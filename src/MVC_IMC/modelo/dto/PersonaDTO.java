@@ -1,6 +1,7 @@
 package MVC_IMC.modelo.dto;
 
 public class PersonaDTO {
+    public String documento;
     public String nombre;
     public int edad;
     public double peso;
@@ -9,7 +10,16 @@ public class PersonaDTO {
     public String estado;
     public String mensaje;
 
-    public PersonaDTO(String nombre, int edad, double peso, double talla, double imc, String estado, String mensaje) {
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public PersonaDTO(String documento, String nombre, int edad, double peso, double talla, double imc, String estado, String mensaje) {
+        this.documento = documento;
         this.nombre = nombre;
         this.edad = edad;
         this.peso = peso;
@@ -83,10 +93,6 @@ public class PersonaDTO {
     public String toString() {
         return "PersonaDTO [documento=" + imc + ", nombre=" + nombre + ", edad=" + edad + "]";
     }
-
-
-
-
 
 
 

@@ -19,7 +19,7 @@ public class PersonaDAO {
 
         try {
             connection = conexion.getConnection();
-            if (connection != null) {
+            if (connection != null) { 
                 String consulta = "INSERT INTO persona (documento, nombre, edad) VALUES (?, ?, ?)";
                 System.out.println(consulta);
 
