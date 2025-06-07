@@ -3,68 +3,48 @@ package MVC_IMC.modelo.conexion;
 import MVC_IMC.controlador.Coordinador;
 import MVC_IMC.modelo.dto.PersonaDTO;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class ConexionBD {
 
-    public static HashMap<String, PersonaDTO> personasMap;
-    private Coordinador miCoordinador;
+    private String nombreBd="operario_bd";
+    private String usuario="root";
+    private String password="carlosmanuel";
+    private String url="jdbc:mysql://localhost:3306/"+nombreBd+"?useUnicode=true&use"
+            + "JDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&"
+            + "serverTimezone=UTC";
 
-    public ConexionBD() {
-        if (personasMap == null) {
-            personasMap = new HashMap<String, PersonaDTO>();
+    Connection conn=null;
+    //constructor de la clase
+    public Conexion(){
+        try {
+            //obtener el driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            //obtener la conexion
+            conn= DriverManager.getConnection(url,usuario,password);
+            if (conn!=null) {
+                System.out.println("Conexion Exitosa  a la BD: "+nombreBd);
+            }else{
+                System.out.println("******************NO SE PUDO CONECTAR "+nombreBd);
+            }
+        }
+        catch (ClassNotFoundException e) {
+            System.out.println("ocurre una ClassNotFoundException : "+e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("ocurre una SQLException: "+e.getMessage());
+            System.out.println("Verifique que Mysql esté encendido...");
         }
     }
+    public Connection getConnection(){
+        return conn;
+    }
+    public void desconectar(){
 
-    public void guardarPersona(PersonaDTO persona) {
-        if (persona != null && persona.getNombre() != null) {
-            String clave = persona.getNombre().trim().toLowerCase();
-            personasMap.put(clave, persona);
-            System.out.println("Persona guardada en BD: " + persona.getNombre());
+            conn=null;
         }
-    }
-
-    public PersonaDTO buscarPersona(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return null;
-        }
-        String clave = nombre.trim().toLowerCase();
-        return personasMap.get(clave);
-    }
-
-    public java.util.List<PersonaDTO> obtenerTodasLasPersonas() {
-        return new java.util.ArrayList<>(personasMap.values());
-    }
-
-    public boolean eliminarPersona(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
-        }
-        String clave = nombre.trim().toLowerCase();
-        PersonaDTO personaEliminada = personasMap.remove(clave);
-        if (personaEliminada != null) {
-            System.out.println("Persona eliminada de BD: " + nombre);
-            return true;
-        }
-        return false;
-    }
-
-    public int obtenerTotalPersonas() {
-        return personasMap.size();
-    }
-
-    public boolean existePersona(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
-        }
-        String clave = nombre.trim().toLowerCase();
-        return personasMap.containsKey(clave);
-    }
-
-    public void limpiarBaseDatos() {
-        personasMap.clear();
-        System.out.println("Base de datos limpiada.");
-    }
 
     public void setCoordinador(Coordinador miCoordinador) {
         this.miCoordinador = miCoordinador;

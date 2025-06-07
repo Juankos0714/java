@@ -1,7 +1,5 @@
 package MVC_IMC.modelo.dao;
 
-import MVC_IMC.controlador.Coordinador;
-import MVC_IMC.modelo.conexion.ConexionBD;
 import MVC_IMC.modelo.dto.PersonaDTO;
 import TrabajoComboBox.conexion.Conexion;
 
@@ -13,12 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonaDAO {
-    private Coordinador miCoordinador;
-    private ConexionBD miConexionBD;
-
-    public PersonaDAO() {
-        this.miConexionBD = new ConexionBD();
-    }
 
     public String registrarPersona(PersonaDTO persona) {
         String resultado = "";
@@ -28,7 +20,7 @@ public class PersonaDAO {
         try {
             connection = conexion.getConnection();
             if (connection != null) {
-                String consulta = "INSERT INTO personas (documento, nombre, edad) VALUES (?, ?, ?,)";
+                String consulta = "INSERT INTO personas (documento, nombre, edad) VALUES (?, ?, ?)";
                 System.out.println(consulta);
 
                 preStatement = connection.prepareStatement(consulta);
@@ -94,69 +86,67 @@ public class PersonaDAO {
         }
         return persona;
     }
-}
+    public ArrayList<PersonaDTO> consultarPersonas() {
+        ArrayList<PersonaDTO> listaPersonas = new ArrayList<>();
+        Connection connection = null;
+        Conexion conexion = new Conexion();
+        PreparedStatement statement = null;
+        ResultSet result = null;
 
-public ArrayList<PersonaDTO> consultarPersonas() {
-    ArrayList<PersonaDTO> listaPersonas = new ArrayList<>();
-    Connection connection = null;
-    Conexion conexion = new Conexion();
-    PreparedStatement statement = null;
-    ResultSet result = null;
+        try {
+            connection = conexion.getConnection();
+            if (connection != null) {
+                String consulta = "SELECT * FROM personas ORDER BY nombre";
+                statement = connection.prepareStatement(consulta);
+                result = statement.executeQuery();
 
-    try {
-        connection = conexion.getConnection();
-        if (connection != null) {
-            String consulta = "SELECT * FROM persona ORDER BY nombre";
-            statement = connection.prepareStatement(consulta);
-            result = statement.executeQuery();
+                while (result.next()) {
+                    PersonaDTO persona = new PersonaDTO();
+                    persona.setDocumento(result.getString("documento"));
+                    persona.setNombre(result.getString("nombre"));
+                    persona.setEdad(result.getInt("edad"));
 
-            while (result.next()) {
-                PersonaDTO persona = new PersonaDTO();
-                persona.setDocumento(result.getString("documento"));
-                persona.setNombre(result.getString("nombre"));
-                persona.setEdad(result.getInt("edad"));
-
-                listaPersonas.add(persona);
+                    listaPersonas.add(persona);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en la consulta de personas: " + e.getMessage());
+        } finally {
+            try {
+                if (result != null) result.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+                conexion.desconectar();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar conexión: " + e.getMessage());
             }
         }
-    } catch (SQLException e) {
-        System.out.println("Error en la consulta de personas: " + e.getMessage());
-    } finally {
-        try {
-            if (result != null) result.close();
-            if (statement != null) statement.close();
-            if (connection != null) connection.close();
-            conexion.desconectar();
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar conexión: " + e.getMessage());
-        }
+        return listaPersonas;
     }
-    return listaPersonas;
-}
 
     public boolean eliminarPersona(String documento) {
         Connection connection = null;
         Conexion conexion = new Conexion();
         PreparedStatement statement = null;
-        ResultSet result = null;
-        PersonaDTO persona = null;
+        int filasAfectadas=0;
+
+
         boolean eliminacion =false;
 
         try {
             connection = conexion.getConnection();
             if (connection != null) {
-                String consulta = "DELETE * FROM personas WHERE documento = ?";
+                String consulta = "DELETE FROM personas WHERE documento = ?";
                 statement = connection.prepareStatement(consulta);
                 statement.setString(1, documento);
-                result = statement.executeQuery();
-                eliminacion=true;
+                filasAfectadas = statement.executeUpdate();
+                eliminacion = (filasAfectadas > 0);
 
             }
         } catch (SQLException e) {
             System.out.println("Error al encontrar el usuario del usuario: " + e.getMessage());
         } finally {
             try {
-                if (result != null) result.close();
                 if (statement != null) statement.close();
                 if (connection != null) connection.close();
                 conexion.desconectar();
@@ -174,16 +164,19 @@ public ArrayList<PersonaDTO> consultarPersonas() {
         Conexion conexion = new Conexion();
         PreparedStatement statement = null;
         ResultSet result = null;
-        PersonaDTO persona = null;
         boolean existe=false;
 
         try {
             connection = conexion.getConnection();
             if (connection != null) {
-                String consulta = "SELECT * FROM personas WHERE documento = ?";
+                String consulta = "SELECT COUNT(*) FROM personas WHERE documento = ?";
                 statement = connection.prepareStatement(consulta);
                 statement.setString(1, documento);
                 result = statement.executeQuery();
+                if (result.next()) {
+                    int count = result.getInt(1);
+                    existe = (count > 0);
+                }
             }
         } catch (SQLException e) {
             System.out.println("Error en la consulta del usuario: " + e.getMessage());
@@ -200,56 +193,46 @@ public ArrayList<PersonaDTO> consultarPersonas() {
         return existe;
     }
 
-
-    public void setCoordinador(Coordinador miCoordinador) {
-        this.miCoordinador = miCoordinador;
-    }
-
-    public void setConexionBD(ConexionBD conexionBD) {
-        this.miConexionBD = conexionBD;
-    }
-
-    public ConexionBD getConexionBD() {
-        return miConexionBD;
-    }
-    public String actualizarPersona(String documento) {
-
+    public String actualizarPersona(PersonaDTO persona) {
+        String resultado = "";
         Connection connection = null;
         Conexion conexion = new Conexion();
-        PreparedStatement statement = null;
-        ResultSet result = null;
-        PersonaDTO persona = null;
+        PreparedStatement preStatement = null;
 
         try {
             connection = conexion.getConnection();
             if (connection != null) {
-                String consulta = "SELECT * FROM personas WHERE documento = ?";
-                statement = connection.prepareStatement(consulta);
-                statement.setString(1, documento);
-                result = statement.executeQuery();
+                String consulta = "UPDATE personas SET nombre = ?, edad = ? WHERE documento = ?";
 
-                if (result.next()) {
-                    persona = new PersonaDTO();
-                    persona.setDocumento(result.getString("documento"));
-                    persona.setNombre(result.getString("nombre"));
-                    persona.setEdad(result.getInt("edad"));
+                preStatement = connection.prepareStatement(consulta);
+                preStatement.setString(1, persona.getNombre());
+                preStatement.setInt(2, persona.getEdad());
+                preStatement.setString(3, persona.getDocumento()); // WHERE va al final
 
+                int filasAfectadas = preStatement.executeUpdate();
+                if (filasAfectadas > 0) {
+                    resultado = "Persona actualizada exitosamente";
+                } else {
+                    resultado = "No se encontró la persona con ese documento";
                 }
+            } else {
+                resultado = "No se pudo conectar a la base de datos";
             }
         } catch (SQLException e) {
-            System.out.println("Error en la consulta del usuario: " + e.getMessage());
+            System.out.println("No se pudo actualizar: " + e.getMessage());
+            resultado = "Error al actualizar la persona: " + e.getMessage();
         } finally {
             try {
-                if (result != null) result.close();
-                if (statement != null) statement.close();
+                if (preStatement != null) preStatement.close();
                 if (connection != null) connection.close();
                 conexion.desconectar();
             } catch (SQLException e) {
                 System.out.println("Error al cerrar conexión: " + e.getMessage());
             }
         }
-        return persona;
-    }
-
+        return resultado;
     }
 }
+
+
+
