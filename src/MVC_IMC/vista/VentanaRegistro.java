@@ -29,7 +29,6 @@ public class VentanaRegistro extends JDialog implements ActionListener {
 
         lblTitulo = new JLabel("Registro de Nueva Persona");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
-        lblTitulo.setForeground(new Color(0, 102, 204));
 
         lblNombre = new JLabel("Nombre completo:");
         txtNombre = new JTextField(20);
@@ -38,12 +37,10 @@ public class VentanaRegistro extends JDialog implements ActionListener {
         txtEdad = new JTextField(10);
 
         btnRegistrar = new JButton("Registrar");
-        btnRegistrar.setBackground(new Color(0, 153, 76));
         btnRegistrar.setForeground(Color.WHITE);
         btnRegistrar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnCancelar = new JButton("Cancelar");
-        btnCancelar.setBackground(new Color(204, 0, 0));
         btnCancelar.setForeground(Color.WHITE);
     }
 
@@ -146,7 +143,7 @@ public class VentanaRegistro extends JDialog implements ActionListener {
                     JOptionPane.INFORMATION_MESSAGE);
 
             limpiarCampos();
-            dispose(); // Cerrar ventana después del registro exitoso
+            dispose();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this,

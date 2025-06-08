@@ -30,24 +30,19 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
         lblTitulo = new JLabel("Consulta Individual");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(0, 102, 204));
-
         lblNombre = new JLabel("Nombre:");
         txtNombre = new JTextField(20);
 
         btnBuscar = new JButton("Buscar");
-        btnBuscar.setBackground(new Color(0, 102, 204));
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setBackground(new Color(204, 0, 0));
         btnCerrar.setForeground(Color.WHITE);
 
         areaResultado = new JTextArea(12, 40);
         areaResultado.setEditable(false);
         areaResultado.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        areaResultado.setBackground(new Color(245, 245, 245));
         areaResultado.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 

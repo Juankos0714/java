@@ -38,7 +38,6 @@ public class Relaciones {
         miCoordinador.setMiPersonaDAO(miPersonaDAO);
         miCoordinador.setMiConexionBD(miConexionBD);
         System.out.println("SISTEMA MVC_IMC INICIALIZADO");
-        System.out.println("Total de personas en BD: " + miConexionBD.obtenerTotalPersonas());
 
 
         // Mostrar ventana principal

@@ -40,12 +40,10 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
         lblTitulo = new JLabel("Lista de Personas Registradas");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        lblTitulo.setForeground(new Color(0, 102, 204));
 
         panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         lblInfo = new JLabel("Total de personas: 0");
         lblInfo.setFont(new Font("Arial", Font.BOLD, 14));
-        lblInfo.setForeground(new Color(0, 102, 204));
         panelInfo.add(lblInfo);
 
         String[] columnas = {"Nombre", "Edad", "Peso (kg)", "Talla (m)", "IMC", "Estado", "Recomendación"};
@@ -63,7 +61,6 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
 
         JTableHeader header = tablaPersonas.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 12));
-        header.setBackground(new Color(0, 102, 204));
         header.setForeground(Color.WHITE);
 
         tablaPersonas.getColumnModel().getColumn(0).setPreferredWidth(150); // Nombre
@@ -78,17 +75,14 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
         scrollTabla.setBorder(BorderFactory.createTitledBorder("Datos de Personas"));
 
         btnActualizar = new JButton("Actualizar Lista");
-        btnActualizar.setBackground(new Color(0, 102, 204));
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnExportar = new JButton("Exportar Datos");
-        btnExportar.setBackground(new Color(0, 153, 76));
         btnExportar.setForeground(Color.WHITE);
         btnExportar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setBackground(new Color(204, 0, 0));
         btnCerrar.setForeground(Color.WHITE);
         btnCerrar.setFont(new Font("Arial", Font.BOLD, 12));
 

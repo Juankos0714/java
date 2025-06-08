@@ -1,5 +1,6 @@
 package MVC_IMC.modelo.dao;
 
+import MVC_IMC.controlador.Coordinador;
 import MVC_IMC.modelo.dto.PersonaDTO;
 import TrabajoComboBox.conexion.Conexion;
 
@@ -231,6 +232,9 @@ public class PersonaDAO {
             }
         }
         return resultado;
+    }
+
+    public void setCoordinador(Coordinador miCoordinador) {
     }
 }
 

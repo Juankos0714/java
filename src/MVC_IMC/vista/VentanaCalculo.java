@@ -34,7 +34,6 @@ public class VentanaCalculo extends JDialog implements ActionListener {
 
         lblTitulo = new JLabel("Cálculo de IMC");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(0, 102, 204));
 
         lblPersona = new JLabel("Persona:");
         cmbPersonas = new JComboBox<>();
@@ -47,23 +46,19 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         txtTalla = new JTextField(10);
 
         btnCalcular = new JButton("Calcular IMC");
-        btnCalcular.setBackground(new Color(0, 102, 204));
         btnCalcular.setForeground(Color.WHITE);
         btnCalcular.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnActualizar = new JButton("↻");
-        btnActualizar.setBackground(new Color(102, 153, 255));
         btnActualizar.setForeground(Color.WHITE);
         btnActualizar.setToolTipText("Actualizar lista");
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setBackground(new Color(204, 0, 0));
         btnCerrar.setForeground(Color.WHITE);
 
         areaResultado = new JTextArea(8, 30);
         areaResultado.setEditable(false);
         areaResultado.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        areaResultado.setBackground(new Color(245, 245, 245));
         areaResultado.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
 
@@ -114,8 +109,8 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         btnCalcular.addActionListener(this);
         btnCerrar.addActionListener(this);
         btnActualizar.addActionListener(this);
-        txtPeso.addActionListener(this);  // Enter va a talla
-        txtTalla.addActionListener(this); // Enter calcula
+        txtPeso.addActionListener(this);
+        txtTalla.addActionListener(this);
     }
 
     private void cargarPersonas() {

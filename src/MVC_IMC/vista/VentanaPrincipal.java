@@ -33,7 +33,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         lblTitulo = new JLabel("Sistema de Cálculo de IMC");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        lblTitulo.setForeground(new Color(0, 102, 204));
 
         lblDescripcion = new JLabel("<html><center>Bienvenido al sistema de cálculo de IMC<br><br>" +
                 "Siga estos pasos:<br>" +
@@ -45,21 +44,18 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
         btnRegistrar = new JButton("1. Registrar Persona");
         btnRegistrar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnRegistrar.setBackground(new Color(0, 153, 76));
         btnRegistrar.setForeground(Color.WHITE);
         btnRegistrar.setPreferredSize(new Dimension(200, 40));
         btnRegistrar.addActionListener(this);
 
         btnCalcular = new JButton("2. Calcular IMC");
         btnCalcular.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCalcular.setBackground(new Color(0, 102, 204));
         btnCalcular.setForeground(Color.WHITE);
         btnCalcular.setPreferredSize(new Dimension(200, 40));
         btnCalcular.addActionListener(this);
 
         btnConsultar = new JButton("3. Ver Consultas");
         btnConsultar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnConsultar.setBackground(new Color(153, 102, 255));
         btnConsultar.setForeground(Color.WHITE);
         btnConsultar.setPreferredSize(new Dimension(200, 40));
         btnConsultar.addActionListener(this);
@@ -78,7 +74,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
 
         JPanel panelTitulo = new JPanel(new BorderLayout());
-        panelTitulo.setBackground(new Color(240, 248, 255));
         panelTitulo.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panelTitulo.add(lblTitulo, BorderLayout.CENTER);
 
@@ -97,7 +92,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         add(panelCentral, BorderLayout.CENTER);
 
         JPanel panelInferior = new JPanel();
-        panelInferior.setBackground(new Color(245, 245, 245));
         panelInferior.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JLabel lblInfo = new JLabel("Sistema MVC - Calculadora de IMC v2.0");
         lblInfo.setFont(new Font("Arial", Font.ITALIC, 12));
@@ -109,41 +103,28 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         menuBar = new JMenuBar();
 
         menuArchivo = new JMenu("Archivo");
-        menuArchivo.setMnemonic('A');
 
         itemSalir = new JMenuItem("Salir");
-        itemSalir.setMnemonic('S');
-        itemSalir.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
         itemSalir.addActionListener(this);
         menuArchivo.add(itemSalir);
 
         menuPrincipal = new JMenu("Principal");
-        menuPrincipal.setMnemonic('P');
 
         itemRegistrarPersona = new JMenuItem("Registrar Persona");
-        itemRegistrarPersona.setMnemonic('R');
-        itemRegistrarPersona.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         itemRegistrarPersona.addActionListener(this);
 
         itemCalcularIMC = new JMenuItem("Calcular IMC");
-        itemCalcularIMC.setMnemonic('I');
-        itemCalcularIMC.setAccelerator(KeyStroke.getKeyStroke("ctrl I"));
         itemCalcularIMC.addActionListener(this);
 
         menuPrincipal.add(itemRegistrarPersona);
         menuPrincipal.add(itemCalcularIMC);
 
         menuConsultas = new JMenu("Consultas");
-        menuConsultas.setMnemonic('C');
 
         itemConsultaIndividual = new JMenuItem("Consulta Individual");
-        itemConsultaIndividual.setMnemonic('n');
-        itemConsultaIndividual.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
         itemConsultaIndividual.addActionListener(this);
 
         itemConsultarLista = new JMenuItem("Lista de Personas");
-        itemConsultarLista.setMnemonic('L');
-        itemConsultarLista.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
         itemConsultarLista.addActionListener(this);
 
         menuConsultas.add(itemConsultaIndividual);

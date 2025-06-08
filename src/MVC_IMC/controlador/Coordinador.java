@@ -77,20 +77,20 @@ public class Coordinador {
         miPersonaDAO.registrarPersona(persona);
     }
 
-    public PersonaDTO consultarPersona(String nombre) {
-        return miPersonaDAO.consultarPersona(nombre);
+    public PersonaDTO consultarPersona(String documento) {
+        return miPersonaDAO.consultarPersonaPorDocumento(documento);
     }
 
     public java.util.List<PersonaDTO> consultarTodasLasPersonas() {
-        return miPersonaDAO.consultarTodasLasPersonas();
+        return miPersonaDAO.consultarPersonas();
     }
 
     public java.util.List<PersonaDTO> obtenerTodasLasPersonas() {
-        return miPersonaDAO.consultarTodasLasPersonas();
+        return miPersonaDAO.consultarPersonas();
     }
 
     public boolean existePersona(String nombre) {
-        PersonaDTO persona = miPersonaDAO.consultarPersona(nombre);
+        PersonaDTO persona = miPersonaDAO.consultarPersonaPorDocumento(nombre);
         return persona != null;
     }
 
