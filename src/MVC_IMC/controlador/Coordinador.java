@@ -94,8 +94,15 @@ public class Coordinador {
         return persona != null;
     }
 
-    public void actualizarPersona(PersonaDTO persona) {
-        miPersonaDAO.actualizarPersona(persona);
+    public String actualizarPersona(PersonaDTO persona) {
+        return miPersonaDAO.actualizarPersona(persona);
+
+    }
+    public String asignarIMC(PersonaDTO persona) {
+        return miPersonaDAO.asignarIMC(persona);
+    }
+    public boolean eliminarPersona(String documento) {
+        return miPersonaDAO.eliminarPersona(documento);
     }
 
     public void cerrarAplicacion() {

@@ -61,7 +61,7 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
 
         JTableHeader header = tablaPersonas.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 12));
-        header.setForeground(Color.WHITE);
+        header.setForeground(Color.BLACK);
 
         tablaPersonas.getColumnModel().getColumn(0).setPreferredWidth(150); // Nombre
         tablaPersonas.getColumnModel().getColumn(1).setPreferredWidth(60);  // Edad
@@ -75,15 +75,15 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
         scrollTabla.setBorder(BorderFactory.createTitledBorder("Datos de Personas"));
 
         btnActualizar = new JButton("Actualizar Lista");
-        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setForeground(Color.BLACK);
         btnActualizar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnExportar = new JButton("Exportar Datos");
-        btnExportar.setForeground(Color.WHITE);
+        btnExportar.setForeground(Color.BLACK);
         btnExportar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setForeground(Color.BLACK);
         btnCerrar.setFont(new Font("Arial", Font.BOLD, 12));
 
         panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));

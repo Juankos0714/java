@@ -25,7 +25,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
     private void initComponents() {
         setTitle("Sistema de Cálculo de IMC");
-        setSize(650, 500);
+        setSize(650, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(true);
@@ -44,25 +44,24 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
         btnRegistrar = new JButton("1. Registrar Persona");
         btnRegistrar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnRegistrar.setForeground(Color.WHITE);
+        btnRegistrar.setForeground(Color.BLACK);
         btnRegistrar.setPreferredSize(new Dimension(200, 40));
         btnRegistrar.addActionListener(this);
 
         btnCalcular = new JButton("2. Calcular IMC");
         btnCalcular.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.setForeground(Color.BLACK);
         btnCalcular.setPreferredSize(new Dimension(200, 40));
         btnCalcular.addActionListener(this);
 
         btnConsultar = new JButton("3. Ver Consultas");
         btnConsultar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnConsultar.setForeground(Color.WHITE);
+        btnConsultar.setForeground(Color.BLACK);
         btnConsultar.setPreferredSize(new Dimension(200, 40));
         btnConsultar.addActionListener(this);
 
         panelCentral = new JPanel();
         panelCentral.setLayout(new BorderLayout(20, 20));
-        panelCentral.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         panelCentral.setBackground(Color.WHITE);
 
         panelBotones = new JPanel();
@@ -79,9 +78,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 
         panelCentral.add(lblDescripcion, BorderLayout.CENTER);
 
-        JLabel lblLogo = new JLabel("📊", JLabel.CENTER);
-        lblLogo.setFont(new Font("Arial", Font.PLAIN, 48));
-        panelCentral.add(lblLogo, BorderLayout.NORTH);
 
         panelBotones.add(btnRegistrar);
         panelBotones.add(btnCalcular);

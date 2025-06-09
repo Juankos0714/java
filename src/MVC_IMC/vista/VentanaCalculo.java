@@ -46,15 +46,15 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         txtTalla = new JTextField(10);
 
         btnCalcular = new JButton("Calcular IMC");
-        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.setForeground(Color.BLACK);
         btnCalcular.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnActualizar = new JButton("↻");
-        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setForeground(Color.BLACK);
         btnActualizar.setToolTipText("Actualizar lista");
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setForeground(Color.BLACK);
 
         areaResultado = new JTextArea(8, 30);
         areaResultado.setEditable(false);
@@ -121,7 +121,7 @@ public class VentanaCalculo extends JDialog implements ActionListener {
             List<PersonaDTO> personas = miCoordinador.obtenerTodasLasPersonas();
             if (personas != null) {
                 for (PersonaDTO persona : personas) {
-                    cmbPersonas.addItem(persona.getNombre());
+                    cmbPersonas.addItem(persona.getDocumento());
                 }
             }
 
@@ -138,7 +138,7 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         if (e.getSource() == btnCalcular || e.getSource() == txtTalla) {
             procesarCalculo();
         } else if (e.getSource() == txtPeso) {
-            txtTalla.requestFocus(); // Pasar al siguiente campo
+            txtTalla.requestFocus();
         } else if (e.getSource() == btnCerrar) {
             dispose();
         } else if (e.getSource() == btnActualizar) {
@@ -183,21 +183,42 @@ public class VentanaCalculo extends JDialog implements ActionListener {
 
             persona.setPeso(peso);
             persona.setTalla(talla);
-            persona = miCoordinador.calcularIMC(persona);
-            miCoordinador.actualizarPersona(persona);
 
-            StringBuilder resultado = new StringBuilder();
-            resultado.append("RESULTADO DEL CÁLCULO\n");
-            resultado.append("================================\n\n");
-            resultado.append("Persona: ").append(persona.getNombre()).append("\n");
-            resultado.append("Edad: ").append(persona.getEdad()).append(" años\n");
-            resultado.append(String.format("Peso: %.1f kg\n", persona.getPeso()));
-            resultado.append(String.format("Talla: %.2f m\n", persona.getTalla()));
-            resultado.append(String.format("IMC: %.2f\n\n", persona.getImc()));
-            resultado.append("Estado: ").append(persona.getEstado()).append("\n\n");
-            resultado.append("Recomendación:\n").append(persona.getMensaje());
+            System.out.println("Antes del cálculo:");
+            System.out.println("Peso: " + persona.getPeso());
+            System.out.println("Talla: " + persona.getTalla());
 
-            areaResultado.setText(resultado.toString());
+            PersonaDTO personaCalculada = miCoordinador.calcularIMC(persona);
+
+            System.out.println("Después del cálculo:");
+            System.out.println("IMC: " + personaCalculada.getImc());
+            System.out.println("Estado: " + personaCalculada.getEstado());
+            System.out.println("Mensaje: " + personaCalculada.getMensaje());
+
+            String resultado = miCoordinador.asignarIMC(personaCalculada);
+
+            if (resultado.contains("exitosamente")) {
+                System.out.println("✓ Todos los datos del IMC se guardaron correctamente en la base de datos");
+            } else {
+                System.out.println("✗ Error al guardar los datos del IMC: " + resultado);
+                JOptionPane.showMessageDialog(this,
+                        "Error al guardar en base de datos: " + resultado,
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            StringBuilder resultadoTexto = new StringBuilder();
+            resultadoTexto.append("RESULTADO DEL CÁLCULO\n");
+            resultadoTexto.append("================================\n\n");
+            resultadoTexto.append("Persona: ").append(persona.getNombre()).append("\n");
+            resultadoTexto.append("Edad: ").append(persona.getEdad()).append(" años\n");
+            resultadoTexto.append(String.format("Peso: %.1f kg\n", persona.getPeso()));
+            resultadoTexto.append(String.format("Talla: %.2f m\n", persona.getTalla()));
+            resultadoTexto.append(String.format("IMC: %.2f\n\n", persona.getImc()));
+            resultadoTexto.append("Estado: ").append(persona.getEstado()).append("\n\n");
+            resultadoTexto.append("Recomendación:\n").append(persona.getMensaje());
+
+            areaResultado.setText(resultadoTexto.toString());
             areaResultado.setCaretPosition(0);
 
         } catch (NumberFormatException ex) {
@@ -207,6 +228,7 @@ public class VentanaCalculo extends JDialog implements ActionListener {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     public void setCoordinador(Coordinador miCoordinador) {
         this.miCoordinador = miCoordinador;

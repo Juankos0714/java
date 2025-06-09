@@ -10,9 +10,10 @@ import java.awt.event.ActionListener;
 public class VentanaRegistro extends JDialog implements ActionListener {
 
     private Coordinador miCoordinador;
-    private JLabel lblTitulo, lblNombre, lblEdad;
-    private JTextField txtNombre, txtEdad;
+    private JLabel lblTitulo, lblNombre, lblEdad,lblDocumento;
+    private JTextField txtNombre, txtEdad,txtDocumento;
     private JButton btnRegistrar, btnCancelar;
+    PersonaDTO persona = new PersonaDTO();
 
     public VentanaRegistro(VentanaPrincipal ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
@@ -23,7 +24,7 @@ public class VentanaRegistro extends JDialog implements ActionListener {
 
     private void initComponents() {
         setTitle("Registrar Persona");
-        setSize(350, 200);
+        setSize(350, 300);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
@@ -36,12 +37,15 @@ public class VentanaRegistro extends JDialog implements ActionListener {
         lblEdad = new JLabel("Edad (años):");
         txtEdad = new JTextField(10);
 
+        lblDocumento = new JLabel("Documento:");
+        txtDocumento = new JTextField(20);
+
         btnRegistrar = new JButton("Registrar");
-        btnRegistrar.setForeground(Color.WHITE);
+        btnRegistrar.setForeground(Color.BLACK);
         btnRegistrar.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnCancelar = new JButton("Cancelar");
-        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setForeground(Color.BLACK);
     }
 
     private void setupLayout() {
@@ -53,20 +57,29 @@ public class VentanaRegistro extends JDialog implements ActionListener {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(lblTitulo, gbc);
 
         gbc.gridwidth = 1; gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.0;
+
+
         gbc.gridx = 0; gbc.gridy = 1;
         panelPrincipal.add(lblNombre, gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 1;gbc.weightx = 0.7;
         panelPrincipal.add(txtNombre, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2;
+        gbc.gridx = 0; gbc.gridy = 2;gbc.weightx = 0.0;
         panelPrincipal.add(lblEdad, gbc);
-        gbc.gridx = 1;
+        gbc.gridx = 1;gbc.weightx = 1.0;
         panelPrincipal.add(txtEdad, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 3;gbc.weightx = 0.0;
+        panelPrincipal.add(lblDocumento, gbc);
+        gbc.gridx = 1;gbc.weightx = 1.0;
+        panelPrincipal.add(txtDocumento, gbc);
 
         JPanel panelBotones = new JPanel(new FlowLayout());
         panelBotones.add(btnRegistrar);
@@ -81,11 +94,12 @@ public class VentanaRegistro extends JDialog implements ActionListener {
         btnCancelar.addActionListener(this);
         txtNombre.addActionListener(this);
         txtEdad.addActionListener(this);
+        txtDocumento.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnRegistrar || e.getSource() == txtEdad) {
+        if (e.getSource() == btnRegistrar || e.getSource() == txtEdad || e.getSource() == txtDocumento ) {
             procesarRegistro();
         } else if (e.getSource() == txtNombre) {
             txtEdad.requestFocus();
@@ -95,10 +109,11 @@ public class VentanaRegistro extends JDialog implements ActionListener {
     }
 
     private void procesarRegistro() {
+        String documento = txtDocumento.getText().trim();
         String nombre = txtNombre.getText().trim();
         String edadStr = txtEdad.getText().trim();
 
-        if (nombre.isEmpty() || edadStr.isEmpty()) {
+        if (documento.isEmpty() || nombre.isEmpty() || edadStr.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Complete todos los campos.",
                     "Campos incompletos",
@@ -117,15 +132,16 @@ public class VentanaRegistro extends JDialog implements ActionListener {
                 return;
             }
 
-            if (miCoordinador.existePersona(nombre)) {
+            if (miCoordinador.existePersona(documento)) {
                 JOptionPane.showMessageDialog(this,
-                        "Ya existe una persona con ese nombre.",
-                        "Persona duplicada",
+                        "Ya existe una persona con ese documento.",
+                        "Documento duplicado",
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
 
             PersonaDTO persona = new PersonaDTO();
+            persona.setDocumento(documento);
             persona.setNombre(nombre);
             persona.setEdad(edad);
             persona.setPeso(0.0);
@@ -155,6 +171,7 @@ public class VentanaRegistro extends JDialog implements ActionListener {
     }
 
     private void limpiarCampos() {
+        txtDocumento.setText("");
         txtNombre.setText("");
         txtEdad.setText("");
         txtNombre.requestFocus();
